@@ -9,7 +9,10 @@
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Model/global.js"></script>
-	<script type="text/javascript" charset="utf-8" src="Repository/filemanager.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Repository/repoManager.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Repository/languageManager.js"></script>
+	<script type="text/javascript" charset="utf-8" src="View/mainScreen.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Controllers/mainMenuViewController.js"></script>
 	<script type="text/javascript">
 		/**
 		 * Initialization.
@@ -38,57 +41,10 @@
 		 */
 		mosync.nativeui.UIReady = function()
 		{
-			// First get the screen we want to show.
-			var mainScreen = document.getNativeElementById("mainScreen");
-
-			// Show the screen.
-			mainScreen.show();
-
-			// Get an instacne of the quick game button created in the markup.
-			var quickPlayButton = document.getNativeElementById("quickPlayButton");
-			// Get an instacne of the play button created in the markup.
-			var playButton = document.getNativeElementById("playButton");
-			// Get an instacne of the settings button created in the markup.
-			var settingsButton = document.getNativeElementById("settingsButton");
-			// Get an instacne of the help button created in the markup.
-			var helpButton = document.getNativeElementById("helpButton");
-
-			quickPlayButton.addEventListener("Clicked", function()
-			{
-
-			});
-
-			playButton.addEventListener("Clicked", function()
-			{
-				
-			});
-			
-			settingsButton.addEventListener("Clicked", function()
-			{
-				
-			});
-
-			helpButton.addEventListener("Clicked", function()
-			{
-				
-			});
-			
-			// initializes the file manager
-			initFileManager(
-				// success - the main directory has been set
-				function()
-				{
-					loadLanguageTexts();
-				});
-			
-		}
-		
-		function loadLanguageTexts()
-		{
-			// filemanager.js/readLanguageFile
-			readLanguageFile();
-		}
-		
+			// create the main menu view controller and show it
+			var mainMenuViewController = new MainMenuViewController(document.getNativeElementById("mainScreen"));
+			mainMenuViewController.loadAndShowScreen();
+		}		
 	</script>
 </head>
 
@@ -117,8 +73,19 @@
 					<div data-widgetType="Button" id="settingsButton"
 						data-width="100%" data-text="Settings" data-fontSize="20"">
 					</div>
+					<div data-widgetType="Button" id="achievementsButton"
+						data-width="100%" data-text="Achievements" data-fontSize="20">
+					</div>
+				</div>
+				<div data-widgetType="HorizontalLayout" id="helpAndAboutLayout"
+					data-width="-1" data-height="80">
 					<div data-widgetType="Button" id="helpButton"
-						data-width="100%" data-text="Help" data-fontSize="20">
+						data-width="80" data-height="80" data-text="?" data-fontSize="16"">
+					</div>
+					<div data-widgetType="HorizontalLayout" data-width="-1">
+					</div>
+					<div data-widgetType="Button" id="aboutButton"
+						data-width="80" data-height="80" data-text="i" data-fontSize="16"">
 					</div>
 				</div>
 			</div>
