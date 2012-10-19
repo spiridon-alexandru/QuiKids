@@ -11,25 +11,17 @@
 	<script type="text/javascript" charset="utf-8" src="Model/global.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Repository/repoManager.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Repository/languageManager.js"></script>
-	<script type="text/javascript" charset="utf-8" src="View/mainScreen.js"></script>
+	<script type="text/javascript" charset="utf-8" src="View/gameView.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Controllers/quickGameViewController.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Controllers/mainMenuViewController.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Controllers/applicationController.js"></script>
 	<script type="text/javascript">
 		/**
 		 * Initialization.
 		 */
 		function initialize()
 		{
-			document.addEventListener("backbutton", close, true);
 			mosync.nativeui.initUI();
-		}
-
-		/**
-		 * Handle the backbutton event.
-		 */
-		function close()
-		{
-			// Close the application if the back key is pressed.
-			mosync.bridge.send(["close"]);
 		}
 
 		/**
@@ -41,10 +33,10 @@
 		 */
 		mosync.nativeui.UIReady = function()
 		{
-			// create the main menu view controller and show it
-			var mainMenuViewController = new MainMenuViewController(document.getNativeElementById("mainScreen"));
-			mainMenuViewController.loadAndShowScreen();
-		}		
+			// create the main application view controller and show it
+			var applicationController = new ApplicationController(document.getNativeElementById(mainStackScreen));
+			applicationController.show();
+		}
 	</script>
 </head>
 
@@ -52,40 +44,42 @@
 	<!-- All of the mosync.nativeui widgets should be wraped inside a
 		tag with id="NativeUI" -->
 	<div id="NativeUI">
-		<!-- The element with id="mainScreen" has two tabs with screens -->
-		<div data-widgetType="Screen" id="mainScreen" data-title="QuiKids">
-			<div data-widgetType="VerticalLayout" id="mainLayout"
-					data-width="-1" data-height="-1">
-				<div data-widgetType="Label" id="screenTitleLabel" data-fontSize="60"
-					data-text="QuiKids" data-textHorizontalAlignment="center" data-width="100%">
-				</div>
-				<div data-widgetType="HorizontalLayout" id="firstHorizontalLayout"
-					data-width="-1" data-height="-1">
-					<div data-widgetType="Button" id="quickPlayButton"
-						data-width="100%" data-text="Quick Play" data-fontSize="20">
+		<div data-widgetType="StackScreen" id="mainStackScreen">
+			<!-- The element with id="mainScreen" has two tabs with screens -->
+			<div data-widgetType="Screen" id="mainScreen" data-title="QuiKids">
+				<div data-widgetType="VerticalLayout" id="mainLayout"
+						data-width="-1" data-height="-1">
+					<div data-widgetType="Label" id="screenTitleLabel" data-fontSize="60"
+						data-text="QuiKids" data-textHorizontalAlignment="center" data-width="100%">
 					</div>
-					<div data-widgetType="Button" id="playButton"
-						data-width="100%" data-text="Play" data-fontSize="20">
+					<div data-widgetType="HorizontalLayout" id="firstHorizontalLayout"
+						data-width="-1" data-height="-1">
+						<div data-widgetType="Button" id="quickPlayButton"
+							data-width="100%" data-text="Quick Play" data-fontSize="20">
+						</div>
+						<div data-widgetType="Button" id="playButton"
+							data-width="100%" data-text="Play" data-fontSize="20">
+						</div>
 					</div>
-				</div>
-				<div data-widgetType="HorizontalLayout" id="secondHorizontalLayout"
-					data-width="-1" data-height="-1">
-					<div data-widgetType="Button" id="settingsButton"
-						data-width="100%" data-text="Settings" data-fontSize="20"">
+					<div data-widgetType="HorizontalLayout" id="secondHorizontalLayout"
+						data-width="-1" data-height="-1">
+						<div data-widgetType="Button" id="settingsButton"
+							data-width="100%" data-text="Settings" data-fontSize="20"">
+						</div>
+						<div data-widgetType="Button" id="achievementsButton"
+							data-width="100%" data-text="Achievements" data-fontSize="20">
+						</div>
 					</div>
-					<div data-widgetType="Button" id="achievementsButton"
-						data-width="100%" data-text="Achievements" data-fontSize="20">
-					</div>
-				</div>
-				<div data-widgetType="HorizontalLayout" id="helpAndAboutLayout"
-					data-width="-1" data-height="80">
-					<div data-widgetType="Button" id="helpButton"
-						data-width="80" data-height="80" data-text="?" data-fontSize="16"">
-					</div>
-					<div data-widgetType="HorizontalLayout" data-width="-1">
-					</div>
-					<div data-widgetType="Button" id="aboutButton"
-						data-width="80" data-height="80" data-text="i" data-fontSize="16"">
+					<div data-widgetType="HorizontalLayout" id="helpAndAboutLayout"
+						data-width="-1" data-height="80">
+						<div data-widgetType="Button" id="helpButton"
+							data-width="80" data-height="80" data-text="?" data-fontSize="16"">
+						</div>
+						<div data-widgetType="HorizontalLayout" data-width="-1">
+						</div>
+						<div data-widgetType="Button" id="aboutButton"
+							data-width="80" data-height="80" data-text="i" data-fontSize="16"">
+						</div>
 					</div>
 				</div>
 			</div>

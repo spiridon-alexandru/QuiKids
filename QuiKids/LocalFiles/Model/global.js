@@ -31,6 +31,9 @@ var textResourcesDirName = "TextResources";
 var languagesDirName = "Lang";
 var languagesFileName = "languages.xml";
 
+// the main stack screen name
+var mainStackScreen = "mainStackScreen";
+
 /**
  * Contains the language texts for all the screens
  */
