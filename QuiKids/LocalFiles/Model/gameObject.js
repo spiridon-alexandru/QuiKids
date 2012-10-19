@@ -15,68 +15,8 @@ function GameObject(category, language, numberOfTiles, difficulty, questionArray
 		_nrOfTiles = numberOfTiles;
 	if(undefined != difficulty)
 		_difficulty = difficulty;
-	if(undefined != questionArray)
-		_setQuestionArray(questionArray);
-	
-	//private functions
-	function _returnCategoryValue()
-	{
-		return _category;
-	};
-	
-	function _returnLanguageValue()
-	{
-		return _language;
-	};
-
-	function _returnDifficultyValue()
-	{
-		return _difficulty;
-	};
-	
-	function _returnNrOfTilesValue()
-	{
-		return _nrOfTiles;
-	};
-	
-	function _returnQuestion(index)
-	{
-		if(index < _questions.length) return _questions[index];
-	};
-	
-	function _returnQuestionArray()
-	{
-		return _questions;
-	};
-	
-	function _setCategoryValue(value)
-	{
-		_category = value;
-	};
-	
-	function _setDifficultyValue(value)
-	{
-		_difficulty = value;
-	};
-	
-	function _setNrOfTilesValue(value)
-	{
-		_nrOfTiles = value;
-	};
-	
-	function _setLanguageValue(value)
-	{
-		_language = value;
-	};
-	
-	function _setQuestionArray(value)
-	{
-		if(value instanceof Array)
-		{
-			_questions = value;
-		}
-		else _questions = undefined;
-	}
+	if(undefined != questionArray && (questionArray instanceof Array))
+		_questions = questionArray;
 
 	//privilaged functions
 	/**
@@ -84,32 +24,32 @@ function GameObject(category, language, numberOfTiles, difficulty, questionArray
 	 */
 	this.getCategory = function()
 	{
-		return _returnCategoryValue();
+		return _category;
 	};
 
 	this.getLanguage = function()
 	{
-		return _returnLanguageValue();
+		return _language;
 	};
 
 	this.getNrOfTiles = function()
 	{
-		return _returnNrOfTilesValue();
+		return _nrOfTiles;
 	};
 
 	this.getDifficulty = function()
 	{
-		return _returnDifficultyValue();
+		return _difficulty;
 	};
 
 	this.getQuestion = function(index)
 	{
-		return _returnQuestion(index);
+		if(index < _questions.length) return _questions[index];
 	};
 
 	this.getQuestions  = function()
 	{
-		return _returnQuestionArray();
+		return _questions;;
 	};
 	
 	/**
@@ -117,27 +57,31 @@ function GameObject(category, language, numberOfTiles, difficulty, questionArray
 	 */
 	this.setCategory = function(category)
 	{
-		_setCategoryValue(category);
+		_category = category;
 	};
 
 	this.setLanguage = function(language)
 	{
-		_setLanguageValue(language);
+		_language = language;
 	};
 
 	this.setNrOfTiles = function(nrOfTiles)
 	{
-		_setNrOfTilesValue(nrOfTiles);
+		_nrOfTiles = nrOfTiles;
 	};
 
 	this.setDifficulty = function(difficulty)
 	{
-		_setDifficultyValue(difficulty);
+		_difficulty = difficulty;
 	};
 
 	this.setQuestions = function(questions)
 	{
-		_setQuestionArray(questions);
+		if(questions instanceof Array)
+		{
+			 _questions = questions;
+		}
+		else _questions = undefined;
 	};
 	
 	/**
@@ -147,9 +91,9 @@ function GameObject(category, language, numberOfTiles, difficulty, questionArray
 	 */
 	this.setQuestion = function(index, questionValue)
 	{
-		if(index < (_returnQuestionArray()).length)
+		if(index < _questions.length)
 		{
-			(_returnQuestionArray())[index] = questionValue;
+			_questions[index] = questionValue;
 		}
 	};
 	
@@ -159,7 +103,7 @@ function GameObject(category, language, numberOfTiles, difficulty, questionArray
 	 */
 	this.addQuestion = function(question)
 	{
-		(_returnQuestionArray()).push(question);
+		_questions.push(question);
 	};
 };
 
