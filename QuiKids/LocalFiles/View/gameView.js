@@ -46,7 +46,7 @@ function GameView(title, gameObj)
 		
 		// add a separator layout before everything
 		var separatorHorizontalLayoutName = "firstSeparatorHorizontalLayout";
-		addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", "20");
+		//addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", "20");
 		
 		for (var i = 0; i < nrTiles; i++)
 		{
@@ -54,69 +54,69 @@ function GameView(title, gameObj)
 			addLayout(horizontalLayoutName, "gameMainLayout", "100%", "100%", null);
 			// add a separator layout before tiles
 			var tileSeparatorHorizontalLayoutName = "firstTitleSeparatorHorizontalLayout" + i;
-			addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, "10", "100%");
+		//	addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, "10", "100%");
 			
 			for (var j = 0; j < nrTiles; j++)
 			{
 				var tileLayoutName = "tile" + i + j;
 				addLayout(tileLayoutName, horizontalLayoutName, "100%", "100%", backgroundColors[j]);
 				var tileSeparatorHorizontalLayoutName = "titleSeparatorHorizontalLayout" + i + j;
-				addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, "10", "100%");
+		//		addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, "10", "100%");
 			}
 			
 			// add a separator layout
 			var separatorHorizontalLayoutName = "separatorHorizontalLayout" + i;
-			addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", "20");
+		//	addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", "20");
 		}
-		
-		/**
-		 * Creates and adds a separator layout to a parent layout.
-		 * @param separatorName The name of the separator layout.
-		 * @param layoutName The name of the parent layout.
-		 * @param separatorWidth The separator width.
-		 * @param separatorHeight The separator height.
-		 */
-		function addSeparatorToLayout(separatorName, layoutName, separatorWidth, separatorHeight)
+	}
+	
+	/**
+	 * Creates and adds a separator layout to a parent layout.
+	 * @param separatorName The name of the separator layout.
+	 * @param layoutName The name of the parent layout.
+	 * @param separatorWidth The separator width.
+	 * @param separatorHeight The separator height.
+	 */
+	function addSeparatorToLayout(separatorName, layoutName, separatorWidth, separatorHeight)
+	{
+	/*	var separator = mosync.nativeui.create("HorizontalLayout", separatorName,
 		{
-			var separator = mosync.nativeui.create("HorizontalLayout", separatorName,
+			"width": separatorWidth,
+			"height": separatorHeight
+		});
+		separator.addTo(layoutName);*/
+	}
+	
+	/**
+	 * Creates and adds a layout to a parent layout.
+	 * @param layoutName The name of the layout to be added.
+	 * @param parentLayoutName The name of the parent layout.
+	 * @param layoutWidth The layout to be added width.
+	 * @param layoutHeight The layout to be added height.
+	 */
+	// TODO SA: remove layout color
+	function addLayout(layoutName, parentLayoutName, layoutWidth, layoutHeight, layoutColor)
+	{
+		var layout;
+		if (layoutColor !== null)
+		{
+			layout = mosync.nativeui.create("Button", layoutName,
 			{
-				"width": separatorWidth,
-				"height": separatorHeight
+				"width": layoutWidth,
+				"height": layoutHeight,
+				"backgroundColor": layoutColor
 			});
-			separator.addTo(layoutName);
 		}
-		
-		/**
-		 * Creates and adds a layout to a parent layout.
-		 * @param layoutName The name of the layout to be added.
-		 * @param parentLayoutName The name of the parent layout.
-		 * @param layoutWidth The layout to be added width.
-		 * @param layoutHeight The layout to be added height.
-		 */
-		// TODO SA: remove layout color
-		function addLayout(layoutName, parentLayoutName, layoutWidth, layoutHeight, layoutColor)
+		else
 		{
-			var layout;
-			if (layoutColor !== null)
+			layout = mosync.nativeui.create("HorizontalLayout", layoutName,
 			{
-				layout = mosync.nativeui.create("HorizontalLayout", layoutName,
-				{
-					"width": layoutWidth,
-					"height": layoutHeight,
-					"backgroundColor": layoutColor
-				});
-			}
-			else
-			{
-				layout = mosync.nativeui.create("HorizontalLayout", layoutName,
-				{
-					"width": layoutWidth,
-					"height": layoutHeight
-				});
-			}
-
-			layout.addTo(parentLayoutName);
+				"width": layoutWidth,
+				"height": layoutHeight
+			});
 		}
+
+		layout.addTo(parentLayoutName);
 	}
 	
 	/**
