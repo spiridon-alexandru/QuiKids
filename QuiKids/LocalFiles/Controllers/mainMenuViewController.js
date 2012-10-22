@@ -6,7 +6,10 @@ function MainMenuViewController(pushScreenCallback)
 		switch(eventType)
 		{
 			case MainMenuEventTypes.PushQuickScreen:
-				_quickGameController.pushScreen();
+				_quickGameController = new QuickGameViewController(function()
+				{
+					_quickGameController.pushScreen();
+				});
 				break;
 			case MainMenuEventTypes.PushPlayScreen:
 				break;
@@ -24,7 +27,7 @@ function MainMenuViewController(pushScreenCallback)
 	});
 	
 	// the other controllers
-	var _quickGameController = new QuickGameViewController();
+	var _quickGameController;
 	
 	// loads the localization data onto the screen widgets
 	loadScreen();
@@ -42,7 +45,7 @@ function MainMenuViewController(pushScreenCallback)
 				{
 					_fileManagerInitialized = true;
 					
-					readLanguageFile(function ()
+					readMainScreenLanguageFile(function ()
 					{
 						// the language file was read, we need to update the view
 						updateUI();
@@ -52,7 +55,7 @@ function MainMenuViewController(pushScreenCallback)
 		}
 		else
 		{
-			readLanguageFile(function ()
+			readMainScreenLanguageFile(function ()
 			{
 				updateUI();
 				pushScreenCallback();

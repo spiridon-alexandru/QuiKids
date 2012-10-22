@@ -3,7 +3,7 @@ var callback;
 /**
  * This function refreshes the file list in the file manager panel.
  */
-function readLanguageFile(successCallback)
+function readQuickPlayLanguageFile(successCallback)
 {	
 	// set the success callback
 	callback = successCallback;
@@ -23,9 +23,9 @@ function readLanguageFile(successCallback)
 						// find the "languages.xml" file - it contains all the languages of the application
 						for(var i = 0; i < entries.length; i++)
 						{
-							if (entries[i].name == languagesFileName && entries[i].isFile)
+							if (entries[i].name == quickPlayScreenLanguagesFileName && entries[i].isFile)
 							{
-								readFile(entries[i]);
+								readQuickPlayFile(entries[i]);
 								break;
 							}
 						}
@@ -48,19 +48,19 @@ function readLanguageFile(successCallback)
  * Sets the file editing panel to the selected file.
  * @param file FilEntry with the info about the selected file.
  */
-function readFile(file)
+function readQuickPlayFile(file)
 {
 	var reader = new FileReader();
 	reader.onloadend = function(evt){
 		var settingsFileContent = evt.target.result;
-		parseFileContent(settingsFileContent);
+		parseQuickPlayFileContent(settingsFileContent);
 	};
 
 	// This call will invoke the onloaded callback above.
 	reader.readAsText(file);
 }
 
-function parseFileContent(content)
+function parseQuickPlayFileContent(content)
 {
 	var parser;
 	var xmlDoc;
@@ -81,10 +81,10 @@ function parseFileContent(content)
 	var languageElements = xmlDoc.getElementsByTagName(languageString);
 	if (languageElements.length > 0)
 	{
-		var mainScreenElements = languageElements[0].getElementsByTagName("MainScreen");
-		if (mainScreenElements.length > 0)
+		var quickPlayScreenElements = languageElements[0].getElementsByTagName("QuickPlay");
+		if (quickPlayScreenElements.length > 0)
 		{
-			getAndSetMainScreenTexts(mainScreenElements[0])
+			getAndSetQuickPlayScreenTexts(quickPlayScreenElements[0])
 		}
 	}
 	else
@@ -98,18 +98,11 @@ function parseFileContent(content)
  * @param mainScreenElement The node that contains the main screen
  * text data in the current application language.
  */
-function getAndSetMainScreenTexts(mainScreenElement)
+function getAndSetQuickPlayScreenTexts(quickPlayScreenElement)
 {
-	var quickPlayElements = mainScreenElement.getElementsByTagName("QuickPlay");
-	var quickPlayElement = quickPlayElements[0].childNodes[0];
-	var playElements = mainScreenElement.getElementsByTagName("Play");
-	var playElement = playElements[0].childNodes[0];
-	var settingsElements = mainScreenElement.getElementsByTagName("Settings");
-	var settingsElement = settingsElements[0].childNodes[0];
-	var achievementsElements = mainScreenElement.getElementsByTagName("Achievements");
-	var achievementsElement = achievementsElements[0].childNodes[0];
-	setMainScreenText(quickPlayElement.nodeValue, playElement.nodeValue,
-			settingsElement.nodeValue, achievementsElement.nodeValue);
+	var titleElements = quickPlayScreenElement.getElementsByTagName("Title");
+	var titleElement = titleElements[0].childNodes[0];
+	setQuickPlayScreenText(titleElement.nodeValue);
 	
 	callback();
 }
