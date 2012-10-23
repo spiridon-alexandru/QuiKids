@@ -1,3 +1,10 @@
+/**
+ * @brief The quick game view controller handles the game screen and handles all the
+ * 		  business logic related to a quick game (creates a random game object filled with
+ * 		  questions, initializes the game view with it and handless all the user actions.
+ * @param pushScreenCallback A callback the announces the main menu view controller that the 
+ *        loading of the screen is done.
+ */
 function QuickGameViewController(pushScreenCallback)
 {
 	// keeps a randomly generated game object used for quick play
@@ -11,7 +18,9 @@ function QuickGameViewController(pushScreenCallback)
 	// Maps the questions to the tile text.
 	var questionTileMap = new Object();
 	
+	// the number of unsolved questions
 	var remainingQuestions = _randomGameObject.getNrOfTilesX() * _randomGameObject.getNrOfTilesY();
+	// the index of the current question to be answered
 	var currentQuestionIndex;
 	
 	/**
@@ -45,16 +54,6 @@ function QuickGameViewController(pushScreenCallback)
 			questionNumber = 2;
 		
 		var qArray = [];
-//		for (var i = 0; i < questionNumber * questionNumber; i++)
-//		{
-//			var text = "Question " + i;
-//			var imgPath = "" + i;
-//			var soundPath = "s" + i;
-//			var question = new QuestionObject(text, imgPath, soundPath);
-//			qArray[i] = question;
-//			solvedQuestion[i] = 0;
-//		}
-
 		_randomGameObject = new GameObject("Colors", "EN", 3, 3, "easy", qArray);
 
 		for(var i = 0; i < (_randomGameObject.getNrOfTilesX() * _randomGameObject.getNrOfTilesY()); i++)

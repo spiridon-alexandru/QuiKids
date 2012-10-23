@@ -1,5 +1,13 @@
+/**
+ * @brief The main menu view controller handles the main menu screen and does the
+ * 		  business logic when one of the buttons is pressed.
+ * @param pushScreenCallback A callback the announces the application controller that the 
+ *        loading of the screen is done.
+ */
 function MainMenuViewController(pushScreenCallback)
 {
+	// this is the main menu screen, initialized with the application title and
+	// the button pressed callback
 	var _mainMenuView = new MainMenuView("QuiKids", function(eventType)
 	{
 		switch(eventType)
