@@ -4,8 +4,13 @@ function GameView(gameObj, tileClickCallback)
 	var _screen;
 	var _mainVerticalLayout;
 	var _titleLabel;
+	var _scoreLabel;
 	var _questionLabel;
-	
+
+	var _borderGreen = "./img/Borders/MEDIUM/green.png";
+	var _borderRed = "./img/Borders/MEDIUM/red.png";
+	var _borderBlue = "./img/Borders/MEDIUM/blue.png";
+
 	// keeps a mapping between a button and its tile text
 	var _buttons = [];
 	var _buttonToTileMap = new Object();
@@ -26,7 +31,8 @@ function GameView(gameObj, tileClickCallback)
 		_mainVerticalLayout = mosync.nativeui.create("VerticalLayout", "gameMainLayout",
 		{
 			"width": "100%",
-			"height": "100%"
+			"height": "100%",
+			"childHorizontalAlignment" : "center"
 		});
 		
 		// create the title label
@@ -40,14 +46,31 @@ function GameView(gameObj, tileClickCallback)
 		_titleLabel.addTo("gameMainLayout");
 		_mainVerticalLayout.addTo("gameScreen");
 		
+		var width = mosync.nativeui.screenWidth / 3.3;
+		var height =  (mosync.nativeui.screenHeight - width * _gameObj.getNrOfTilesY()) / 3;
+
+		_scoreLabel = mosync.nativeui.create("Label", "scoreLabel",
+		{
+			"width": mosync.nativeui.screenWidth,
+			"height": height,
+			"fontSize": 20,
+			"textHorizontalAlignment": "left",
+			"textVerticalAlignment" : "center",
+			"text" : "Score:"
+		});
+
+		_scoreLabel.addTo("gameMainLayout");
+
 		createTileUI();
-		
+
 		// create the question
 		_questionLabel = mosync.nativeui.create("Label", "questionLabel",
 		{
 			"width": "100%",
+			"height": height,
 			"fontSize": 20,
-			"textHorizontalAlignment": "center"
+			"textHorizontalAlignment": "center",
+			"textVerticalAlignment" : "center"
 		});
 		_questionLabel.addTo("gameMainLayout");
 	}
@@ -59,11 +82,14 @@ function GameView(gameObj, tileClickCallback)
 		{
 			var horizontalLayoutName = "horizontalLayout" + i;
 			addLayout(horizontalLayoutName, "gameMainLayout", "100%", "100%");
+
+			var width = mosync.nativeui.screenWidth / 3.3;
+			var height = width;
 			
 			for (var j = 0; j < _gameObj.getNrOfTilesY(); j++)
 			{
 				var tileButtonName = _gameObj.getQuestion(index).getQuestionId();
-				addTileButton(tileButtonName, horizontalLayoutName, "100%", "100%", _gameObj.getQuestion(index).getImagePathMedium());
+				addTileButton(tileButtonName, horizontalLayoutName, width, height, _borderBlue, _gameObj.getQuestion(index).getImagePathMedium());
 				index++;
 			}
 		}
@@ -94,7 +120,7 @@ function GameView(gameObj, tileClickCallback)
 	 * @param buttonWidth The button width.
 	 * @param buttonHeight The button height.
 	 */
-	function addTileButton(buttonName, parentLayoutName, buttonWidth, buttonHeight, imagePath)
+	function addTileButton(buttonName, parentLayoutName, buttonWidth, buttonHeight, borderPath, imagePath)
 	{
 		var tileButton = mosync.nativeui.create("ImageButton", buttonName,
 			{
@@ -102,8 +128,12 @@ function GameView(gameObj, tileClickCallback)
 				"height": buttonHeight
 			});
 
-		var imageID = buttonName;
-		mosync.resource.loadImage(imagePath, imageID, function(imageID, imageHandle){
+		var imageID1 = buttonName + "fg";
+		mosync.resource.loadImage(imagePath, imageID1, function(imageID, imageHandle){
+			 tileButton.setProperty("backgroundImage", imageHandle);});
+
+		var imageID2 = buttonName + "bg";
+		mosync.resource.loadImage(borderPath, imageID2, function(imageID, imageHandle){
 			 tileButton.setProperty("image", imageHandle);});
 
 		var buttonIndex = _buttons.length;
@@ -160,4 +190,33 @@ function GameView(gameObj, tileClickCallback)
 	{
 		_questionLabel.setProperty("text", questionText);
 	};
-}
+
+	this.setGreenBorder = function(buttonIndex)
+	{
+		var button = _buttons[buttonIndex];
+		var imageID = buttonIndex + "bg";
+		mosync.resource.loadImage(_borderGreen, imageID, function(imageID, imageHandle){
+			button.setProperty("image", imageHandle);});
+	};
+
+	this.setRedBorder = function(buttonIndex)
+	{
+		var button = _buttons[buttonIndex];
+		var imageID = buttonIndex + "bg";
+		mosync.resource.loadImage(_borderRed, imageID, function(imageID, imageHandle){
+			button.setProperty("image", imageHandle);});
+	};
+
+	this.setBlueBorder = function(buttonIndex)
+	{
+		var button = _buttons[buttonIndex];
+		var imageID = buttonIndex + "bg";
+		mosync.resource.loadImage(_borderBlue, imageID, function(imageID, imageHandle){
+			button.setProperty("image", imageHandle);});
+	};
+
+	this.updateScoreValue = function(value)
+	{
+		_scoreLabel.setProperty("text", "Score: " + value);
+	};
+};
