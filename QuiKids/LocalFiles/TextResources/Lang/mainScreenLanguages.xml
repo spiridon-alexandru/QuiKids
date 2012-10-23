@@ -1,10 +1,10 @@
 <Languages>
 	<EN>
 		<MainScreen>
-			<QuickPlay>Quick Play sd</QuickPlay>
-			<Play>Play sd</Play>
-			<Settings>Settings sd</Settings>
-			<Achievements>Achievements sd</Achievements>
+			<QuickPlay>Quick Play</QuickPlay>
+			<Play>Play</Play>
+			<Settings>Settings</Settings>
+			<Achievements>Achievements</Achievements>
 		</MainScreen>
 	</EN>
 </Languages>

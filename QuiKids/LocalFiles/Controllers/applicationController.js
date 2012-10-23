@@ -12,7 +12,7 @@ function ApplicationController(stackScreen)
 	
 	this.show = function ()
 	{
-		_stackScreen.show();
+		loadingScreen.show();
 
 		initFileManager(
 			// success - the main directory has been set
@@ -22,6 +22,7 @@ function ApplicationController(stackScreen)
 				_mainMenuViewController = new MainMenuViewController(function()
 				{
 					_mainMenuViewController.pushScreen();
+					_stackScreen.show();
 				});
 			});
 	};	

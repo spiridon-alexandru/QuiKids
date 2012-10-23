@@ -21,6 +21,13 @@ function MainMenuView(title, eventCallback)
 	var _helpButton;
 	var _aboutButton;	
 	
+	// the height/width of a button
+	var _buttonWidth;
+	
+	var _titleHeight;
+	var _contentHeight;
+	var _bottomBarHeight;
+	
 	// the labels located bellow the buttons
 	var _quickPlayLabel;
 	var _playLabel;
@@ -34,6 +41,17 @@ function MainMenuView(title, eventCallback)
 	 */
 	function createUI()
 	{
+		// set the button width value based on the device screen width
+		_buttonWidth = mosync.nativeui.screenWidth/3;
+		
+		// the title will occupy 20 % of the screen height
+		_titleHeight = 20/100 * mosync.nativeui.screenHeight;
+		// the content will be 60% of the screen height
+		_contentHeight = 60/100 * mosync.nativeui.screenHeight;
+		// the bottom bar (containing the help and about buttons) will occupy 20%
+		// of the screen height
+		_bottomBarHeight = 20/100 * mosync.nativeui.screenHeight;
+		
 		// create the screen
 		_screen = mosync.nativeui.create("Screen", "mainMenuScreen",
 		{
@@ -50,6 +68,7 @@ function MainMenuView(title, eventCallback)
 		_titleLabel = mosync.nativeui.create("Label", "mainMenuScreenTitleLabel",
 		{
 			"width": "100%",
+			"height": _titleHeight,
 			"text": _title,
 			"fontSize": 60,
 			"textHorizontalAlignment": "center"
@@ -59,6 +78,7 @@ function MainMenuView(title, eventCallback)
 		_mainVerticalLayout.addTo("mainMenuScreen");
 		
 		createButtonUI();
+		addButtonImages();
 		addButtonEventHandlers();
 	}
 	
@@ -71,10 +91,10 @@ function MainMenuView(title, eventCallback)
 		var _thirdHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "thirdHorizontalLayout",
 		{
 			"width": "100%",
-			"height": "100%"
+			"height": _bottomBarHeight
 		});
 		
-		_helpButton = mosync.nativeui.create("Button", "helpButton",
+		_helpButton = mosync.nativeui.create("ImageButton", "helpButton",
 		{
 			"width": "80",
 			"height": "80",
@@ -87,7 +107,7 @@ function MainMenuView(title, eventCallback)
 			"width": "100%"
 		});
 		
-		_aboutButton = mosync.nativeui.create("Button", "aboutButton",
+		_aboutButton = mosync.nativeui.create("ImageButton", "aboutButton",
 		{
 			"width": "80",
 			"height": "80",
@@ -101,13 +121,40 @@ function MainMenuView(title, eventCallback)
 		_thirdHorizontalLayout.addTo("mainMenuMainLayout");
 	}
 	
+	/**
+	 * Adds images to the main menu buttons.
+	 * TODO SA: use xml values for the image paths
+	 */
+	function addButtonImages()
+	{
+		 mosync.resource.loadImage("./img/Menu/MEDIUM/quick play.png", "img", function(imageID, imageHandle){
+			 	_quickPlayButton.setProperty("backgroundImage", imageHandle);
+	        });
+		 
+		 mosync.resource.loadImage("./img/Menu/MEDIUM/play.png", "PlayButtonImage", function(imageID, imageHandle){
+	            _playButton.setProperty("backgroundImage", imageHandle);
+	        });
+		 
+		 mosync.resource.loadImage("./img/Menu/MEDIUM/settings.png", "SettingsButtonImage", function(imageID, imageHandle){
+	            _settingsButton.setProperty("backgroundImage", imageHandle);
+	        });
+		 
+		 mosync.resource.loadImage("./img/Menu/MEDIUM/about.png", "AboutButtonImage", function(imageID, imageHandle){
+	            _aboutButton.setProperty("backgroundImage", imageHandle);
+	        });
+		 
+		 mosync.resource.loadImage("./img/Menu/MEDIUM/help.png", "HelpButtonImage", function(imageID, imageHandle){
+	            _helpButton.setProperty("backgroundImage", imageHandle);
+	        });
+	}
+	
 	function createFirstButtonRow()
 	{
 		// create the horizontal layout that will contain the quick play and play buttons
 		var _firstHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "firstHorizontalLayout",
 		{
 			"width": "100%",
-			"height": "100%"
+			"height": _contentHeight/2
 		});
 		// create the quick play layout, button and label
 		createQuickPlayLayout("firstHorizontalLayout");		
@@ -128,8 +175,8 @@ function MainMenuView(title, eventCallback)
 		
 		_quickPlayButton = mosync.nativeui.create("ImageButton", "quickPlayButton",
 		{
-			"width": "100%",
-			"fontSize": 20
+			"width": _buttonWidth,
+			"height": _buttonWidth
 		});
 		_quickPlayLabel = mosync.nativeui.create("Label", "quickPlayLabel",
 		{
@@ -151,8 +198,8 @@ function MainMenuView(title, eventCallback)
 
 		_playButton = mosync.nativeui.create("ImageButton", "playButton",
 		{
-			"width": "100%",
-			"fontSize": 20
+			"width": _buttonWidth,
+			"height": _buttonWidth
 		});
 		_playLabel = mosync.nativeui.create("Label", "playLabel",
 		{
@@ -169,7 +216,7 @@ function MainMenuView(title, eventCallback)
 		var _secondHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "secondHorizontalLayout",
 		{
 			"width": "100%",
-			"height": "100%"
+			"height": _contentHeight/2
 		});
 		// create the settings layout, button and label
 		createSettingsLayout("secondHorizontalLayout");		
@@ -190,8 +237,8 @@ function MainMenuView(title, eventCallback)
 		
 		_settingsButton = mosync.nativeui.create("ImageButton", "settingsButton",
 		{
-			"width": "100%",
-			"fontSize": 20
+			"width": _buttonWidth,
+			"height": _buttonWidth
 		});
 		_settingsLabel = mosync.nativeui.create("Label", "settingsLabel",
 		{
@@ -213,8 +260,8 @@ function MainMenuView(title, eventCallback)
 		
 		_achievementsButton = mosync.nativeui.create("ImageButton", "achievementsButton",
 		{
-			"width": "100%",
-			"fontSize": 20
+			"width": _buttonWidth,
+			"height": _buttonWidth
 		});
 		_achievementsLabel = mosync.nativeui.create("Label", "achievementsLabel",
 		{

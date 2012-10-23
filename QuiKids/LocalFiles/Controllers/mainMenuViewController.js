@@ -1,6 +1,6 @@
 function MainMenuViewController(pushScreenCallback)
 {
-	var _mainMenuView = new MainMenuView("QuiKids\n", function(eventType)
+	var _mainMenuView = new MainMenuView("QuiKids", function(eventType)
 	{
 		switch(eventType)
 		{
