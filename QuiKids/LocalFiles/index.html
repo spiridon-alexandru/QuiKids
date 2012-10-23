@@ -9,7 +9,10 @@
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Model/global.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Model/questionObject.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Model/gameObject.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Repository/repoManager.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Repository/gameRepo.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Repository/languageManager.js"></script>
 	<script type="text/javascript" charset="utf-8" src="View/gameView.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Controllers/quickGameViewController.js"></script>
@@ -35,6 +38,7 @@
 		{
 			// create the main application view controller and show it
 			var applicationController = new ApplicationController(document.getNativeElementById(mainStackScreen));
+
 			applicationController.show();
 		}
 	</script>

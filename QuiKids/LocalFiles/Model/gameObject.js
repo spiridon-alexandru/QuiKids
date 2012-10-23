@@ -1,9 +1,10 @@
-function GameObject(category, language, numberOfTiles, difficulty, questionArray)
+function GameObject(category, language, numberOfTilesX, numberOfTilesY, difficulty, questionArray)
 {
 	//private data
 	var _category = null;
 	var _language = null;
-	var _nrOfTiles = null;
+	var _nrOfTilesX = new Number();
+	var _nrOfTilesY = new Number();
 	var _difficulty = null;
 	var _questions = new Array();
 
@@ -11,8 +12,10 @@ function GameObject(category, language, numberOfTiles, difficulty, questionArray
 		_category = category;
 	if(undefined != language)
 		_language = language;
-	if(undefined != numberOfTiles)
-		_nrOfTiles = numberOfTiles;
+	if(undefined != numberOfTilesX)
+		_nrOfTilesX = numberOfTilesX;
+	if(undefined != numberOfTilesY)
+		_nrOfTilesY = numberOfTilesY;
 	if(undefined != difficulty)
 		_difficulty = difficulty;
 	if(undefined != questionArray && (questionArray instanceof Array))
@@ -32,9 +35,14 @@ function GameObject(category, language, numberOfTiles, difficulty, questionArray
 		return _language;
 	};
 
-	this.getNrOfTiles = function()
+	this.getNrOfTilesX = function()
 	{
-		return _nrOfTiles;
+		return _nrOfTilesX;
+	};
+
+	this.getNrOfTilesY = function()
+	{
+		return _nrOfTilesY;
 	};
 
 	this.getDifficulty = function()
@@ -65,9 +73,14 @@ function GameObject(category, language, numberOfTiles, difficulty, questionArray
 		_language = language;
 	};
 
-	this.setNrOfTiles = function(nrOfTiles)
+	this.setNrOfTilesX = function(nrOfTilesX)
 	{
-		_nrOfTiles = nrOfTiles;
+		_nrOfTilesX = nrOfTilesX;
+	};
+
+	this.setNrOfTilesY = function(nrOfTilesY)
+	{
+		_nrOfTilesY = nrOfTilesY;
 	};
 
 	this.setDifficulty = function(difficulty)

@@ -30,6 +30,8 @@ function getApplicationLanguageString()
 var textResourcesDirName = "TextResources";
 var languagesDirName = "Lang";
 var languagesFileName = "languages.xml";
+var categoriesDirName = "Categories";
+var questionsFileName = "questions.xml";
 
 // the main stack screen name
 var mainStackScreen = "mainStackScreen";
