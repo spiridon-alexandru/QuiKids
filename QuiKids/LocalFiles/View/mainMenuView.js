@@ -98,7 +98,6 @@ function MainMenuView(title, eventCallback)
 		{
 			"width": "80",
 			"height": "80",
-			"text": "?",
 			"fontSize": 16
 		});
 		
@@ -111,7 +110,6 @@ function MainMenuView(title, eventCallback)
 		{
 			"width": "80",
 			"height": "80",
-			"text": "i",
 			"fontSize": 16
 		});
 		

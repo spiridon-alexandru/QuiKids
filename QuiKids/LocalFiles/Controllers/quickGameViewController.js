@@ -162,17 +162,26 @@ function QuickGameViewController(pushScreenCallback)
 		successCallback();
 	}
 
+	/**
+	 * Removes the game screen from the main stack screen.
+	 */
 	function popGameScreen()
 	{
 		var stackScreen = document.getNativeElementById(mainStackScreen);
 		stackScreen.pop();
 	}
 
+	/**
+	 * Returns the game screen.
+	 */
 	this.getScreen = function()
 	{
 		return _quickGameView.getScreen();
 	};
 
+	/**
+	 * Pushes the game screen into the main stack screen.
+	 */
 	this.pushScreen = function()
 	{
 		_quickGameView.getScreen().pushTo(mainStackScreen);
