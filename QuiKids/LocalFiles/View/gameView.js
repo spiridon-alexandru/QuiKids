@@ -1,9 +1,14 @@
-function GameView(title, gameObj)
+function GameView(gameObj, tileClickCallback)
 {
+	var _gameObj = gameObj;
 	var _screen;
 	var _mainVerticalLayout;
 	var _titleLabel;
-	var _title = title;
+	var _questionLabel;
+	
+	// keeps a mapping between a button and its tile text
+	var _buttons = [];
+	var _buttonToTileMap = new Object();
 	
 	createUI();
 	
@@ -28,7 +33,6 @@ function GameView(title, gameObj)
 		_titleLabel = mosync.nativeui.create("Label", "gameScreenTitleLabel",
 		{
 			"width": "100%",
-			"text": _title,
 			"fontSize": 60,
 			"textHorizontalAlignment": "center"
 		});
@@ -37,86 +41,87 @@ function GameView(title, gameObj)
 		_mainVerticalLayout.addTo("gameScreen");
 		
 		createTileUI();
+		
+		// create the question
+		_questionLabel = mosync.nativeui.create("Label", "questionLabel",
+		{
+			"width": "100%",
+			"fontSize": 20,
+			"textHorizontalAlignment": "center"
+		});
+		_questionLabel.addTo("gameMainLayout");
 	}
 	
 	function createTileUI()
 	{	
-		var nrTiles = 6;
-		var backgroundColors = ["0xFF0000", "0x00FF00", "0x0000FF", "0xFF0000", "0x00FF00", "0x0000FF"];
-		
-		// add a separator layout before everything
-		var separatorHorizontalLayoutName = "firstSeparatorHorizontalLayout";
-		addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", "20");
+		var nrTiles = Math.sqrt(_gameObj.getNrOfTiles());
 		
 		for (var i = 0; i < nrTiles; i++)
 		{
 			var horizontalLayoutName = "horizontalLayout" + i;
-			addLayout(horizontalLayoutName, "gameMainLayout", "100%", "100%", null);
-			// add a separator layout before tiles
-			var tileSeparatorHorizontalLayoutName = "firstTitleSeparatorHorizontalLayout" + i;
-			addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, "10", "100%");
+			addLayout(horizontalLayoutName, "gameMainLayout", "100%", "100%");
 			
 			for (var j = 0; j < nrTiles; j++)
 			{
-				var tileLayoutName = "tile" + i + j;
-				addLayout(tileLayoutName, horizontalLayoutName, "100%", "100%", backgroundColors[j]);
-				var tileSeparatorHorizontalLayoutName = "titleSeparatorHorizontalLayout" + i + j;
-				addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, "10", "100%");
+				var tileButtonName = "" + i + j;
+				addTileButton(tileButtonName, horizontalLayoutName, "100%", "100%");
 			}
-			
-			// add a separator layout
-			var separatorHorizontalLayoutName = "separatorHorizontalLayout" + i;
-			addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", "20");
 		}
-		
-		/**
-		 * Creates and adds a separator layout to a parent layout.
-		 * @param separatorName The name of the separator layout.
-		 * @param layoutName The name of the parent layout.
-		 * @param separatorWidth The separator width.
-		 * @param separatorHeight The separator height.
-		 */
-		function addSeparatorToLayout(separatorName, layoutName, separatorWidth, separatorHeight)
+	}
+	
+	/**
+	 * Creates and adds a layout to a parent layout.
+	 * @param layoutName The name of the layout to be added.
+	 * @param parentLayoutName The name of the parent layout.
+	 * @param layoutWidth The layout to be added width.
+	 * @param layoutHeight The layout to be added height.
+	 */
+	function addLayout(layoutName, parentLayoutName, layoutWidth, layoutHeight)
+	{
+		var layout = mosync.nativeui.create("HorizontalLayout", layoutName,
 		{
-			var separator = mosync.nativeui.create("HorizontalLayout", separatorName,
-			{
-				"width": separatorWidth,
-				"height": separatorHeight
-			});
-			separator.addTo(layoutName);
-		}
-		
-		/**
-		 * Creates and adds a layout to a parent layout.
-		 * @param layoutName The name of the layout to be added.
-		 * @param parentLayoutName The name of the parent layout.
-		 * @param layoutWidth The layout to be added width.
-		 * @param layoutHeight The layout to be added height.
-		 */
-		// TODO SA: remove layout color
-		function addLayout(layoutName, parentLayoutName, layoutWidth, layoutHeight, layoutColor)
-		{
-			var layout;
-			if (layoutColor !== null)
-			{
-				layout = mosync.nativeui.create("HorizontalLayout", layoutName,
-				{
-					"width": layoutWidth,
-					"height": layoutHeight,
-					"backgroundColor": layoutColor
-				});
-			}
-			else
-			{
-				layout = mosync.nativeui.create("HorizontalLayout", layoutName,
-				{
-					"width": layoutWidth,
-					"height": layoutHeight
-				});
-			}
+			"width": layoutWidth,
+			"height": layoutHeight
+		});
 
-			layout.addTo(parentLayoutName);
-		}
+		layout.addTo(parentLayoutName);
+	}
+	
+	/**
+	 * Creates and adds a button tile to a parent layout.
+	 * @param buttonName The name of the tile button to be added.
+	 * @param parentLayoutName The name of the parent layout.
+	 * @param buttonWidth The button width.
+	 * @param buttonHeight The button height.
+	 */
+	function addTileButton(buttonName, parentLayoutName, buttonWidth, buttonHeight)
+	{
+		var tileButton = mosync.nativeui.create("Button", buttonName,
+			{
+				"width": buttonWidth,
+				"height": buttonHeight,
+				"text": buttonName
+			});
+
+		var buttonIndex = _buttons.length;
+		_buttons[buttonIndex] = tileButton;
+		_buttonToTileMap[buttonIndex] = buttonName;
+		
+		_buttons[buttonIndex].addEventListener("Clicked", function()
+			{
+				tileClickCallback(getButtonTileNumber(buttonIndex));
+			});
+		_buttons[buttonIndex].addTo(parentLayoutName);
+	}
+
+	/**
+	 * Returns the tile text of a tile button
+	 * @param button The button of interest.
+	 * @returns The tile text of the button.
+	 */
+	function getButtonTileNumber(buttonIndex) 
+	{
+	    return _buttonToTileMap[buttonIndex];
 	}
 	
 	/**
@@ -135,5 +140,21 @@ function GameView(title, gameObj)
 	this.getScreenTitle = function()
 	{
 		return _title;
+	};
+	
+	/**
+	 * Sets the title of the screen.
+	 */
+	this.setQuickPlayScreenTitle = function(title)
+	{
+		_titleLabel.setProperty("text", title);
+	};
+	
+	/**
+	 * Sets the current question text.
+	 */
+	this.setQuestionText = function(questionText)
+	{
+		_questionLabel.setProperty("text", questionText);
 	};
 }

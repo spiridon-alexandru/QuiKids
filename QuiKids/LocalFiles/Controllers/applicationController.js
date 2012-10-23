@@ -12,10 +12,17 @@ function ApplicationController(stackScreen)
 	
 	this.show = function ()
 	{
-		// we first load the localized text data
-		_mainMenuViewController = new MainMenuViewController(document.getNativeElementById("mainScreen"));
-		_mainMenuViewController.loadScreen();
-
 		_stackScreen.show();
+
+		initFileManager(
+			// success - the main directory has been set
+			function()
+			{
+				// we push the screen only when the localized data has been loaded
+				_mainMenuViewController = new MainMenuViewController(function()
+				{
+					_mainMenuViewController.pushScreen();
+				});
+			});
 	};	
 }

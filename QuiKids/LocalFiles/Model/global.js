@@ -1,4 +1,11 @@
-// this file will contain the settings of the application
+/**
+ * This file contains the global settings of the application.
+ */
+
+/***************************************************************
+ * Language related settings.
+ ***************************************************************/
+// The languages available
 Languages = {
 	EN : 0,
 	RO : 1
@@ -24,12 +31,13 @@ function getApplicationLanguageString()
 	return languageString;
 }
 
-/**
+/***************************************************************
  * Global variables (folder/file names etc).
- */
+ ***************************************************************/
 var textResourcesDirName = "TextResources";
 var languagesDirName = "Lang";
-var languagesFileName = "languages.xml";
+var mainScreenLanguagesFileName = "mainScreenLanguages.xml";
+var quickPlayScreenLanguagesFileName = "quickPlayScreenLanguages.xml";
 var categoriesDirName = "Categories";
 var questionsFileName = "questions.xml";
 
@@ -47,6 +55,10 @@ mainScreenText.play = "Play";
 mainScreenText.settings = "Settings";
 mainScreenText.achievements = "Achievements";
 
+//the main screen defaults
+var quickPlayScreenText = new Object();
+quickPlayScreenText.title = "Quick Play";
+
 /**
  * Sets the MainScreen widget texts.
  * @param quickPlayText The quick play button text;
@@ -62,3 +74,17 @@ function setMainScreenText(quickPlayText, playText,
 	mainScreenText.settings = settingsText;
 	mainScreenText.achievements = achievementsText;
 }
+
+/**
+ * Sets the QuickPlay screen widget texts.
+ * @param title The title of the quick play page.
+ */
+function setQuickPlayScreenText(title)
+{
+	quickPlayScreenText.title = title;
+}
+
+/***************************************************************
+ * Loading screen initialization.
+ ***************************************************************/
+var loadingScreen = new LoadingScreen();

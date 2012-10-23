@@ -57,7 +57,7 @@ function GameObject(category, language, numberOfTilesX, numberOfTilesY, difficul
 
 	this.getQuestions  = function()
 	{
-		return _questions;;
+		return _questions;
 	};
 	
 	/**
