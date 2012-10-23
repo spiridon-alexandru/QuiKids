@@ -53,18 +53,18 @@ function GameView(gameObj, tileClickCallback)
 	}
 	
 	function createTileUI()
-	{	
-		var nrTiles = Math.sqrt(_gameObj.getNrOfTiles());
-		
-		for (var i = 0; i < nrTiles; i++)
+	{
+		var index = 0;
+		for (var i = 0; i < _gameObj.getNrOfTilesX(); i++)
 		{
 			var horizontalLayoutName = "horizontalLayout" + i;
 			addLayout(horizontalLayoutName, "gameMainLayout", "100%", "100%");
 			
-			for (var j = 0; j < nrTiles; j++)
+			for (var j = 0; j < _gameObj.getNrOfTilesY(); j++)
 			{
-				var tileButtonName = "" + i + j;
-				addTileButton(tileButtonName, horizontalLayoutName, "100%", "100%");
+				var tileButtonName = _gameObj.getQuestion(index).getQuestionId();
+				addTileButton(tileButtonName, horizontalLayoutName, "100%", "100%", _gameObj.getQuestion(index).getImagePathMedium());
+				index++;
 			}
 		}
 	}
@@ -94,14 +94,17 @@ function GameView(gameObj, tileClickCallback)
 	 * @param buttonWidth The button width.
 	 * @param buttonHeight The button height.
 	 */
-	function addTileButton(buttonName, parentLayoutName, buttonWidth, buttonHeight)
+	function addTileButton(buttonName, parentLayoutName, buttonWidth, buttonHeight, imagePath)
 	{
-		var tileButton = mosync.nativeui.create("Button", buttonName,
+		var tileButton = mosync.nativeui.create("ImageButton", buttonName,
 			{
 				"width": buttonWidth,
-				"height": buttonHeight,
-				"text": buttonName
+				"height": buttonHeight
 			});
+
+		var imageID = buttonName;
+		mosync.resource.loadImage(imagePath, imageID, function(imageID, imageHandle){
+			 tileButton.setProperty("image", imageHandle);});
 
 		var buttonIndex = _buttons.length;
 		_buttons[buttonIndex] = tileButton;
