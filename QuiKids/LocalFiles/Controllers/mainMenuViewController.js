@@ -50,10 +50,10 @@ function MainMenuViewController(pushScreenCallback)
 	 */
 	function updateUI()
 	{
-		_mainMenuView.setQuickPlayButtonText(mainScreenText.quickPlay);
-		_mainMenuView.setPlayButtonText(mainScreenText.play);
-		_mainMenuView.setSettingsButtonText(mainScreenText.settings);
-		_mainMenuView.setAchievementsButtonText(mainScreenText.achievements);
+		_mainMenuView.setQuickPlayLabelText(mainScreenText.quickPlay);
+		_mainMenuView.setPlayLabelText(mainScreenText.play);
+		_mainMenuView.setSettingsLabelText(mainScreenText.settings);
+		_mainMenuView.setAchievementsLabelText(mainScreenText.achievements);
 	}
 	
 	/**

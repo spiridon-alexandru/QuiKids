@@ -21,6 +21,12 @@ function MainMenuView(title, eventCallback)
 	var _helpButton;
 	var _aboutButton;	
 	
+	// the labels located bellow the buttons
+	var _quickPlayLabel;
+	var _playLabel;
+	var _settingsLabel;
+	var _achievementsLabel;
+
 	createUI();
 	
 	/**
@@ -58,51 +64,8 @@ function MainMenuView(title, eventCallback)
 	
 	function createButtonUI()
 	{
-		// create the horizontal layout that will contain the quick play and play buttons
-		var _firstHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "firstHorizontalLayout",
-		{
-			"width": "100%",
-			"height": "100%"
-		});
-		
-		_quickPlayButton = mosync.nativeui.create("Button", "quickPlayButton",
-		{
-			"width": "100%",
-			"fontSize": 20
-		});
-		
-		_playButton = mosync.nativeui.create("Button", "playButton",
-		{
-			"width": "100%",
-			"fontSize": 20
-		});
-		
-		_quickPlayButton.addTo("firstHorizontalLayout");
-		_playButton.addTo("firstHorizontalLayout");
-		_firstHorizontalLayout.addTo("mainMenuMainLayout");
-		
-		// create the horizontal layout that will contain the settings and achievements buttons
-		var _secondHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "secondHorizontalLayout",
-		{
-			"width": "100%",
-			"height": "100%"
-		});
-		
-		_settingsButton = mosync.nativeui.create("Button", "settingsButton",
-		{
-			"width": "100%",
-			"fontSize": 20
-		});
-		
-		_achievementsButton = mosync.nativeui.create("Button", "achievementsButton",
-		{
-			"width": "100%",
-			"fontSize": 20
-		});
-		
-		_settingsButton.addTo("secondHorizontalLayout");
-		_achievementsButton.addTo("secondHorizontalLayout");
-		_secondHorizontalLayout.addTo("mainMenuMainLayout");
+		createFirstButtonRow();
+		createSecondButtonRow();
 		
 		// create horizontal layout that will contain the help and about buttons
 		var _thirdHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "thirdHorizontalLayout",
@@ -136,6 +99,131 @@ function MainMenuView(title, eventCallback)
 		_horizontalLayout.addTo("thirdHorizontalLayout");
 		_aboutButton.addTo("thirdHorizontalLayout");
 		_thirdHorizontalLayout.addTo("mainMenuMainLayout");
+	}
+	
+	function createFirstButtonRow()
+	{
+		// create the horizontal layout that will contain the quick play and play buttons
+		var _firstHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "firstHorizontalLayout",
+		{
+			"width": "100%",
+			"height": "100%"
+		});
+		// create the quick play layout, button and label
+		createQuickPlayLayout("firstHorizontalLayout");		
+		
+		// create the play layout, button and label
+		createPlayLayout("firstHorizontalLayout");
+		
+		_firstHorizontalLayout.addTo("mainMenuMainLayout");
+	}
+	
+	function createQuickPlayLayout(parentLayoutName)
+	{
+		var _qpVerticalLayout = mosync.nativeui.create("VerticalLayout", "qpVerticalLayout",
+		{
+			"width": "100%",
+			"height": "100%"
+		});
+		
+		_quickPlayButton = mosync.nativeui.create("ImageButton", "quickPlayButton",
+		{
+			"width": "100%",
+			"fontSize": 20
+		});
+		_quickPlayLabel = mosync.nativeui.create("Label", "quickPlayLabel",
+		{
+			"textHorizontalAlignment": "center"
+		});
+		
+		_quickPlayButton.addTo("qpVerticalLayout");
+		_quickPlayLabel.addTo("qpVerticalLayout");
+		_qpVerticalLayout.addTo(parentLayoutName);
+	}
+	
+	function createPlayLayout(parentLayoutName)
+	{
+		var _pVerticalLayout = mosync.nativeui.create("VerticalLayout", "pVerticalLayout",
+		{
+			"width": "100%",
+			"height": "100%"
+		});
+
+		_playButton = mosync.nativeui.create("ImageButton", "playButton",
+		{
+			"width": "100%",
+			"fontSize": 20
+		});
+		_playLabel = mosync.nativeui.create("Label", "playLabel",
+		{
+			"textHorizontalAlignment": "center"
+		});
+		
+		_playButton.addTo("pVerticalLayout");
+		_playLabel.addTo("pVerticalLayout");
+		_pVerticalLayout.addTo(parentLayoutName);
+	}
+	
+	function createSecondButtonRow()
+	{
+		var _secondHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "secondHorizontalLayout",
+		{
+			"width": "100%",
+			"height": "100%"
+		});
+		// create the settings layout, button and label
+		createSettingsLayout("secondHorizontalLayout");		
+		
+		// create the achievements layout, button and label
+		createAchievementsLayout("secondHorizontalLayout");
+		
+		_secondHorizontalLayout.addTo("mainMenuMainLayout");
+	}
+	
+	function createSettingsLayout(parentLayoutName)
+	{
+		var _sVerticalLayout = mosync.nativeui.create("VerticalLayout", "sVerticalLayout",
+		{
+			"width": "100%",
+			"height": "100%"
+		});
+		
+		_settingsButton = mosync.nativeui.create("ImageButton", "settingsButton",
+		{
+			"width": "100%",
+			"fontSize": 20
+		});
+		_settingsLabel = mosync.nativeui.create("Label", "settingsLabel",
+		{
+			"textHorizontalAlignment": "center"
+		});
+		
+		_settingsButton.addTo("sVerticalLayout");
+		_settingsLabel.addTo("sVerticalLayout");
+		_sVerticalLayout.addTo(parentLayoutName);
+	}
+	
+	function createAchievementsLayout(parentLayoutName)
+	{
+		var _aVerticalLayout = mosync.nativeui.create("VerticalLayout", "aVerticalLayout",
+		{
+			"width": "100%",
+			"height": "100%"
+		});
+		
+		_achievementsButton = mosync.nativeui.create("ImageButton", "achievementsButton",
+		{
+			"width": "100%",
+			"fontSize": 20
+		});
+		_achievementsLabel = mosync.nativeui.create("Label", "achievementsLabel",
+		{
+			"textHorizontalAlignment": "center"
+		});
+		
+		_achievementsButton.addTo("aVerticalLayout");
+		_achievementsLabel.addTo("aVerticalLayout");
+		_aVerticalLayout.addTo(parentLayoutName);
 	}
 	
 	function addButtonEventHandlers()
@@ -176,24 +264,24 @@ function MainMenuView(title, eventCallback)
 		});
 	}
 	
-	this.setQuickPlayButtonText = function(text)
+	this.setQuickPlayLabelText = function(text)
 	{
-		_quickPlayButton.setProperty("text", text);
+		_quickPlayLabel.setProperty("text", text);
 	};
 	
-	this.setPlayButtonText = function(text)
+	this.setPlayLabelText = function(text)
 	{
-		_playButton.setProperty("text", text);
+		_playLabel.setProperty("text", text);
 	};
 	
-	this.setSettingsButtonText = function(text)
+	this.setSettingsLabelText = function(text)
 	{
-		_settingsButton.setProperty("text", text);
+		_settingsLabel.setProperty("text", text);
 	};
 	
-	this.setAchievementsButtonText = function(text)
+	this.setAchievementsLabelText = function(text)
 	{
-		_achievementsButton.setProperty("text", text);
+		_achievementsLabel.setProperty("text", text);
 	};
 	
 	/**
