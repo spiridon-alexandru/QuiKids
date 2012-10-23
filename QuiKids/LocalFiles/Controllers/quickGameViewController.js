@@ -5,7 +5,8 @@ function QuickGameViewController(pushScreenCallback)
 	// solvedQuestion[i] = 0 if the question was not flaged as solved, 1 otherwise
 	var solvedQuestion = [];
 	var _quickGameView;
-	
+	var _score = 0;
+
 	generateRandomGameObject();
 
 	// Maps the questions to the tile text.
@@ -75,6 +76,10 @@ function QuickGameViewController(pushScreenCallback)
 								if (questionTileMap[tileName] == currentQuestionIndex)
 								{
 									alert("CORRECT");
+									_score += 2;
+									_quickGameView.setGreenBorder(questionTileMap[tileName]);
+									_quickGameView.updateScoreValue(_score);
+
 									setNextQuestion(function()
 										{
 											//end game
@@ -90,7 +95,11 @@ function QuickGameViewController(pushScreenCallback)
 								}
 								else
 								{
-									alert("INCORRECT");
+									//alert("INCORRECT");
+									_score -= 1;
+									_quickGameView.updateScoreValue(_score);
+									_quickGameView.setRedBorder(questionTileMap[tileName]);
+									setInterval(function(){ _quickGameView.setBlueBorder(questionTileMap[tileName]); }, 500);
 								}
 							});
 
