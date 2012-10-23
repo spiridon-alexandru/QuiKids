@@ -81,3 +81,8 @@ function setQuickPlayScreenText(title)
 {
 	quickPlayScreenText.title = title;
 }
+
+/***************************************************************
+ * Loading screen initialization.
+ ***************************************************************/
+var loadingScreen = new LoadingScreen();

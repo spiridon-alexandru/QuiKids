@@ -14,10 +14,15 @@ function ApplicationController(stackScreen)
 	{
 		_stackScreen.show();
 		
-		// we push the screen only when the localized data has been loaded
-		_mainMenuViewController = new MainMenuViewController(function()
-		{
-			_mainMenuViewController.pushScreen();
-		});
+		initFileManager(
+			// success - the main directory has been set
+			function()
+			{
+				// we push the screen only when the localized data has been loaded
+				_mainMenuViewController = new MainMenuViewController(function()
+				{
+					_mainMenuViewController.pushScreen();
+				});
+			});
 	};	
 }

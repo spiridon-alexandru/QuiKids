@@ -1,5 +1,6 @@
 function GameView(gameObj, tileClickCallback)
 {
+	var _gameObj = gameObj;
 	var _screen;
 	var _mainVerticalLayout;
 	var _titleLabel;
@@ -45,7 +46,6 @@ function GameView(gameObj, tileClickCallback)
 		_questionLabel = mosync.nativeui.create("Label", "questionLabel",
 		{
 			"width": "100%",
-			"text": "What is the number of the button you will click?",
 			"fontSize": 20,
 			"textHorizontalAlignment": "center"
 		});
@@ -54,7 +54,7 @@ function GameView(gameObj, tileClickCallback)
 	
 	function createTileUI()
 	{	
-		var nrTiles = 3;
+		var nrTiles = Math.sqrt(_gameObj.getNrOfTiles());
 		
 		for (var i = 0; i < nrTiles; i++)
 		{
@@ -99,7 +99,8 @@ function GameView(gameObj, tileClickCallback)
 		var tileButton = mosync.nativeui.create("Button", buttonName,
 			{
 				"width": buttonWidth,
-				"height": buttonHeight
+				"height": buttonHeight,
+				"text": buttonName
 			});
 
 		var buttonIndex = _buttons.length;
@@ -147,5 +148,13 @@ function GameView(gameObj, tileClickCallback)
 	this.setQuickPlayScreenTitle = function(title)
 	{
 		_titleLabel.setProperty("text", title);
+	};
+	
+	/**
+	 * Sets the current question text.
+	 */
+	this.setQuestionText = function(questionText)
+	{
+		_questionLabel.setProperty("text", questionText);
 	};
 }

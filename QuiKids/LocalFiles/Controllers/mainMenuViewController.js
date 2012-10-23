@@ -1,14 +1,15 @@
 function MainMenuViewController(pushScreenCallback)
 {
-	var _fileManagerInitialized = false;
 	var _mainMenuView = new MainMenuView("QuiKids\n", function(eventType)
 	{
 		switch(eventType)
 		{
 			case MainMenuEventTypes.PushQuickScreen:
+				loadingScreen.show();
 				_quickGameController = new QuickGameViewController(function()
 				{
 					_quickGameController.pushScreen();
+					showMainStackScreen();
 				});
 				break;
 			case MainMenuEventTypes.PushPlayScreen:
@@ -37,40 +38,36 @@ function MainMenuViewController(pushScreenCallback)
 	 */
 	function loadScreen()
 	{
-		if (!_fileManagerInitialized)
+		readMainScreenLanguageFile(function ()
 		{
-			initFileManager(
-				// success - the main directory has been set
-				function()
-				{
-					_fileManagerInitialized = true;
-					
-					readMainScreenLanguageFile(function ()
-					{
-						// the language file was read, we need to update the view
-						updateUI();
-						pushScreenCallback();
-					});
-				});
-		}
-		else
-		{
-			readMainScreenLanguageFile(function ()
-			{
-				updateUI();
-				pushScreenCallback();
-			});
-		}
-	};
+			updateUI();
+			pushScreenCallback();
+		});
+	}
 	
-	var updateUI = function()
+	/**
+	 * Updates the UI with the localization texts.
+	 */
+	function updateUI()
 	{
 		_mainMenuView.setQuickPlayButtonText(mainScreenText.quickPlay);
 		_mainMenuView.setPlayButtonText(mainScreenText.play);
 		_mainMenuView.setSettingsButtonText(mainScreenText.settings);
 		_mainMenuView.setAchievementsButtonText(mainScreenText.achievements);
-	};
+	}
 	
+	/**
+	 * Shows the main stack screen/
+	 */
+	function showMainStackScreen()
+	{
+		var stackScreen = document.getNativeElementById(mainStackScreen);
+		stackScreen.show();
+	}
+	
+	/**
+	 * Pushes the main menu screen to the main stack screen.
+	 */
 	this.pushScreen = function()
 	{
 		_mainMenuView.getScreen().pushTo(mainStackScreen);
