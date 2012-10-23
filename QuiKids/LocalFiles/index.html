@@ -13,6 +13,7 @@
 	<script type="text/javascript" charset="utf-8" src="Model/gameObject.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Model/questionObject.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Repository/repoManager.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Repository/gameRepo.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Repository/mainScreenLanguageManager.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Repository/quickPlayScreenLanguageManager.js"></script>
 	<script type="text/javascript" charset="utf-8" src="View/mainMenuView.js"></script>
@@ -40,6 +41,7 @@
 		{
 			// create the main application view controller and show it
 			var applicationController = new ApplicationController(document.getNativeElementById(mainStackScreen));
+
 			applicationController.show();
 		}
 	</script>

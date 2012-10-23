@@ -38,6 +38,8 @@ var textResourcesDirName = "TextResources";
 var languagesDirName = "Lang";
 var mainScreenLanguagesFileName = "mainScreenLanguages.xml";
 var quickPlayScreenLanguagesFileName = "quickPlayScreenLanguages.xml";
+var categoriesDirName = "Categories";
+var questionsFileName = "questions.xml";
 
 // the main stack screen name
 var mainStackScreen = "mainStackScreen";

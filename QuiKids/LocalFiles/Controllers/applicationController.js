@@ -13,7 +13,7 @@ function ApplicationController(stackScreen)
 	this.show = function ()
 	{
 		_stackScreen.show();
-		
+
 		initFileManager(
 			// success - the main directory has been set
 			function()
