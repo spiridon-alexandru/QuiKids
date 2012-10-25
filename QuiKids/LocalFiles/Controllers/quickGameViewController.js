@@ -98,7 +98,7 @@ function QuickGameViewController(pushScreenCallback)
 									_score -= 1;
 									_quickGameView.updateScoreValue(_score);
 									_quickGameView.setRedBorder(questionTileMap[tileName]);
-									setInterval(function(){ _quickGameView.setBlueBorder(questionTileMap[tileName]); }, 500);
+									var interval = setInterval(function(){ _quickGameView.setBlueBorder(questionTileMap[tileName]); clearInterval(interval); }, 500);
 								}
 							});
 
