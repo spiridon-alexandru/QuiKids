@@ -11,6 +11,7 @@ function MainMenuView(title, eventCallback)
 	var _screen;
 	var _mainVerticalLayout;
 	var _topSpacer;
+	var _titleLabel;
 	var _title = title;
 	
 	// the main menu buttons
@@ -28,6 +29,7 @@ function MainMenuView(title, eventCallback)
 	var _separatorWidth;
 	
 	var _topSpacerHeight;
+	var _titleSpacerHeight;
 	var _bottomBarHeight;
 	var _labelHeight;
 
@@ -56,20 +58,6 @@ function MainMenuView(title, eventCallback)
 		_labelHeight = Math.floor(((screenWidth<screenHeight?screenWidth:screenHeight) * (20/100)) / 3);
 		
 		var remainingHeight = screenHeight - 2 * _buttonWidth - 2 * _separatorSize - 2 * _labelHeight;
-
-		_titleFontSize = 60;
-		_textFontSize = 16;
-		if(isIPhoneOS)
-		{
-			_titleFontSize = 25;
-			_textFontSize = 11;
-		}
-
-		// the top spacer will occupy 30 % of the remaining height
-		_topSpacerHeight = 10/100 * remainingHeight;
-		// the bottom bar (containing the help and about buttons) will occupy 70%
-		// of the remaining height
-		_bottomBarHeight = 80/100 * remainingHeight;
 		
 		// create the screen
 		_screen = mosync.nativeui.create("Screen", "mainMenuScreen",
@@ -83,15 +71,45 @@ function MainMenuView(title, eventCallback)
 			"width": "100%",
 			"height": "100%"
 		});
-		
-		// create the top spacer 
-		_topSpacer = mosync.nativeui.create("HorizontalLayout", "mainMenuScreenTitleLabel",
+
+		if(isIPhoneOS)
 		{
-			"width": "100%",
-			"height": Math.floor(_topSpacerHeight),
-		});
-		
-		_topSpacer.addTo("mainMenuMainLayout");
+			// the top spacer will occupy 30 % of the remaining height
+			_topSpacerHeight = 10/100 * remainingHeight;
+			// the bottom bar (containing the help and about buttons) will occupy 70%
+			// of the remaining height
+			_bottomBarHeight = 80/100 * remainingHeight;
+
+			_textFontSize = 11;
+				
+			// create the top spacer 
+			_topSpacer = mosync.nativeui.create("HorizontalLayout", "mainMenuScreenTopSpacer",
+			{
+				"width": "100%",
+				"height": Math.floor(_topSpacerHeight)
+			});
+			
+			_topSpacer.addTo("mainMenuMainLayout");
+		}
+		else
+		{
+			_titleSpacerHeight = 33/100 * remainingHeight;
+			_bottomBarHeight = 66/100 * remainingHeight;
+			
+			_titleFontSize = 60;
+			_textFontSize = 16;
+			
+			_titleLabel = mosync.nativeui.create("Label", "mainMenuScreenTitleLabel",
+			{
+				"width" : "100%",
+				"height": Math.floor(_titleSpacerHeight),
+				"fontSize": _titleFontSize,
+				"text" : _title
+			});
+
+			_titleLabel.addTo("mainMenuMainLayout");
+		}
+
 		_mainVerticalLayout.addTo("mainMenuScreen");
 		
 		createButtonUI();
