@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+* @file index.html
+*
+* The main entry point inside the Quikids application.
+-->
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
+	<script type="text/javascript" charset="utf-8" src="View/loadingView.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Model/global.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Model/questionObject.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Model/gameObject.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Repository/repoManager.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Repository/gameRepo.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Repository/mainScreenLanguageManager.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Repository/quickPlayScreenLanguageManager.js"></script>
+	<script type="text/javascript" charset="utf-8" src="View/mainMenuView.js"></script>
+	<script type="text/javascript" charset="utf-8" src="View/gameView.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Controllers/quickGameViewController.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Controllers/mainMenuViewController.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Controllers/applicationController.js"></script>
+	<script type="text/javascript">
+		/**
+		 * Initialization.
+		 */
+		function initialize()
+		{
+			mosync.nativeui.initUI();
+		}
+
+		/**
+		 * Called by the NativeUI library when the UI is ready to
+		 * be shown. Show the main screen here.
+		 *
+		 * Here we illustrate how to add events to widgets and how to
+		 * create widgets from JavaScript code.
+		 */
+		mosync.nativeui.UIReady = function()
+		{
+			// create the main application view controller and show it
+			var applicationController = new ApplicationController(document.getNativeElementById(mainStackScreen));
+
+			applicationController.show();
+		}
+	</script>
+</head>
+
+<body onload="initialize()">
+	<!-- All of the mosync.nativeui widgets should be wraped inside a
+		tag with id="NativeUI" -->
+	<div id="NativeUI">
+		<div data-widgetType="StackScreen" id="mainStackScreen"></div>
+	</div>
+</body>
+</html>
