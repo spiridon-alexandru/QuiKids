@@ -42,15 +42,15 @@ function MainMenuView(title, eventCallback)
 	function createUI()
 	{
 		// set the button width value based on the device screen width
-		_buttonWidth = mosync.nativeui.screenWidth/3;
+		_buttonWidth = screenWidth/3;
 		
 		// the title will occupy 20 % of the screen height
-		_titleHeight = 20/100 * mosync.nativeui.screenHeight;
+		_titleHeight = 20/100 * screenHeight;
 		// the content will be 60% of the screen height
-		_contentHeight = 60/100 * mosync.nativeui.screenHeight;
+		_contentHeight = 60/100 * screenHeight;
 		// the bottom bar (containing the help and about buttons) will occupy 20%
 		// of the screen height
-		_bottomBarHeight = 20/100 * mosync.nativeui.screenHeight;
+		_bottomBarHeight = 20/100 * screenHeight;
 		
 		// create the screen
 		_screen = mosync.nativeui.create("Screen", "mainMenuScreen",
