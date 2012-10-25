@@ -47,14 +47,14 @@ function GameView(gameObj, tileClickCallback)
 		}
 
 		// create the title label
-		_titleLabel = mosync.nativeui.create("Label", "gameScreenTitleLabel",
-		{
-			"width": "100%",
-			"fontSize": _titleFontSize,
-			"textHorizontalAlignment": "center"
-		});
-
-		_titleLabel.addTo("gameMainLayout");
+//		_titleLabel = mosync.nativeui.create("Label", "gameScreenTitleLabel",
+//		{
+//			"width": "100%",
+//			"fontSize": _titleFontSize,
+//			"textHorizontalAlignment": "center"
+//		});
+//
+//		_titleLabel.addTo("gameMainLayout");
 		_mainVerticalLayout.addTo("gameScreen");
 
 		// the width (the same with height) of a tile will be the minimum between height/width divided
@@ -251,7 +251,7 @@ function GameView(gameObj, tileClickCallback)
 	 */
 	this.setQuickPlayScreenTitle = function(title)
 	{
-		_titleLabel.setProperty("text", title);
+		_screen.setProperty("title", title);
 	};
 	
 	/**
