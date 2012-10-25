@@ -54,8 +54,8 @@ function GameView(gameObj, tileClickCallback)
 
 		_scoreLabel = mosync.nativeui.create("Label", "scoreLabel",
 		{
-			"width": screenWidth,
-			"height": height,
+			"width": Math.floor(screenWidth),
+			"height": Math.floor(height),
 			"fontSize": 20,
 			"textHorizontalAlignment": "left",
 			"textVerticalAlignment" : "center",
@@ -72,7 +72,7 @@ function GameView(gameObj, tileClickCallback)
 		_questionLabel = mosync.nativeui.create("Label", "questionLabel",
 		{
 			"width": "100%",
-			"height": height,
+			"height": Math.floor(height),
 			"fontSize": 20,
 			"textHorizontalAlignment": "center",
 			"textVerticalAlignment" : "center"
@@ -83,14 +83,24 @@ function GameView(gameObj, tileClickCallback)
 	function createTileUI()
 	{
 		var index = 0;
+
+		// the separator width/height = 5% from min(screenWidth,screenHeight) * (number_of_horizontal_tiles + 1)
+		var separatorSize = ((screenWidth<screenHeight?screenWidth:screenHeight) * (5/100)) / (_gameObj.getNrOfTilesX() + 1);
+		
+		var separatorHorizontalLayoutName = "firstSeparatorHorizontalLayout";	  	
+		addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", Math.floor(separatorSize));
+			
 		for (var i = 0; i < _gameObj.getNrOfTilesX(); i++)
 		{
 			var horizontalLayoutName = "horizontalLayout" + i;
 			addLayout(horizontalLayoutName, "gameMainLayout", "100%", "100%");
+			
+			// add a separator layout before tiles
+			var tileSeparatorHorizontalLayoutName = "firstTitleSeparatorHorizontalLayout" + i;
+			addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, Math.floor(separatorSize), "100%");
 
-			// the width (the same with height) of a tile will be the minimum between height/width divided
-			// by the number of tiles horizontally
-			var width = (screenWidth<screenHeight?screenWidth:screenHeight) / _gameObj.getNrOfTilesX();
+			// the tile width/height = 95% from min(screenWidth,screenHeight) * number_of_horizontal_tiles
+			var width = ((screenWidth<screenHeight?screenWidth:screenHeight) * (95/100)) / _gameObj.getNrOfTilesX();
 			var height = width;
 			
 			for (var j = 0; j < _gameObj.getNrOfTilesY(); j++)
@@ -98,8 +108,33 @@ function GameView(gameObj, tileClickCallback)
 				var tileButtonName = _gameObj.getQuestion(index).getQuestionId();
 				addTileButton(tileButtonName, horizontalLayoutName, width, height, _borderBlue, _gameObj.getQuestion(index).getImagePathMedium());
 				index++;
+				
+				var tileSeparatorHorizontalLayoutName = "titleSeparatorHorizontalLayout" + i + j;
+				addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, Math.floor(separatorSize), "100%");
 			}
+			
+			// add a separator layout
+			var separatorHorizontalLayoutName = "separatorHorizontalLayout" + i;	
+			addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", Math.floor(separatorSize));
 		}
+	}
+	
+	/**  	
+	 * Creates and adds a separator layout to a parent layout.
+	 * @param separatorName The name of the separator layout.
+	 * @param layoutName The name of the parent layout.
+	 * @param separatorWidth The separator width.
+	 * @param separatorHeight The separator height.
+	 */
+	function addSeparatorToLayout(separatorName, layoutName, separatorWidth, separatorHeight)
+	{
+		var separator = mosync.nativeui.create("HorizontalLayout", separatorName,
+		{
+			"width": separatorWidth,
+			"height": separatorHeight
+		});
+		
+		separator.addTo(layoutName);
 	}
 	
 	/**
@@ -113,8 +148,8 @@ function GameView(gameObj, tileClickCallback)
 	{
 		var layout = mosync.nativeui.create("HorizontalLayout", layoutName,
 		{
-			"width": layoutWidth,
-			"height": layoutHeight
+			"width": Math.floor(layoutWidth),
+			"height": Math.floor(layoutHeight)
 		});
 
 		layout.addTo(parentLayoutName);
@@ -131,8 +166,8 @@ function GameView(gameObj, tileClickCallback)
 	{
 		var tileButton = mosync.nativeui.create("ImageButton", buttonName,
 			{
-				"width": buttonWidth,
-				"height": buttonHeight
+				"width": Math.floor(buttonWidth),
+				"height": Math.floor(buttonHeight)
 			});
 
 		var imageID1 = buttonName + "fg";
