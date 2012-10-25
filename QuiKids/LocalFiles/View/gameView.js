@@ -46,12 +46,15 @@ function GameView(gameObj, tileClickCallback)
 		_titleLabel.addTo("gameMainLayout");
 		_mainVerticalLayout.addTo("gameScreen");
 		
-		var width = mosync.nativeui.screenWidth / 3.3;
-		var height =  (mosync.nativeui.screenHeight - width * _gameObj.getNrOfTilesY()) / 3;
+		// the width (the same with height) of a tile will be the minimum between height/width divided
+		// by the number of tiles horizontally
+		var width = (screenWidth<screenHeight?screenWidth:screenHeight) / _gameObj.getNrOfTilesX();
+		// the height of the score label will be 20% of (screenHeight - total title height)
+		var height = (screenHeight - width * _gameObj.getNrOfTilesY()) * (1/5);
 
 		_scoreLabel = mosync.nativeui.create("Label", "scoreLabel",
 		{
-			"width": mosync.nativeui.screenWidth,
+			"width": screenWidth,
 			"height": height,
 			"fontSize": 20,
 			"textHorizontalAlignment": "left",
@@ -64,6 +67,8 @@ function GameView(gameObj, tileClickCallback)
 		createTileUI();
 
 		// create the question
+		// the question label height will be 80% of (screenHeight - total title height)
+		var qLabelHeight = (screenHeight - width * _gameObj.getNrOfTilesY()) * (4/5);
 		_questionLabel = mosync.nativeui.create("Label", "questionLabel",
 		{
 			"width": "100%",
@@ -83,7 +88,9 @@ function GameView(gameObj, tileClickCallback)
 			var horizontalLayoutName = "horizontalLayout" + i;
 			addLayout(horizontalLayoutName, "gameMainLayout", "100%", "100%");
 
-			var width = mosync.nativeui.screenWidth / 3.3;
+			// the width (the same with height) of a tile will be the minimum between height/width divided
+			// by the number of tiles horizontally
+			var width = (screenWidth<screenHeight?screenWidth:screenHeight) / _gameObj.getNrOfTilesX();
 			var height = width;
 			
 			for (var j = 0; j < _gameObj.getNrOfTilesY(); j++)
