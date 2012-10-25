@@ -11,12 +11,15 @@ function GameView(gameObj, tileClickCallback)
 	var _borderRed = "./img/Borders/MEDIUM/red.png";
 	var _borderBlue = "./img/Borders/MEDIUM/blue.png";
 
+	var _titleFontSize;
+	var _textFontSize;
+
 	// keeps a mapping between a button and its tile text
 	var _buttons = [];
 	var _buttonToTileMap = new Object();
-	
+
 	createUI();
-	
+
 	/**
 	 * Creates the UI of the quick game.
 	 */
@@ -26,7 +29,7 @@ function GameView(gameObj, tileClickCallback)
 		_screen = mosync.nativeui.create("Screen", "gameScreen",
 		{
 		});
-		
+
 		// create the main screen layout
 		_mainVerticalLayout = mosync.nativeui.create("VerticalLayout", "gameMainLayout",
 		{
@@ -34,18 +37,26 @@ function GameView(gameObj, tileClickCallback)
 			"height": "100%",
 			"childHorizontalAlignment" : "center"
 		});
-		
+
+		_titleFontSize = 60;
+		_textFontSize = 20;
+		if(isIPhoneOS)
+		{
+			_titleFontSize = 25;
+			_textFontSize = 15;
+		}
+
 		// create the title label
 		_titleLabel = mosync.nativeui.create("Label", "gameScreenTitleLabel",
 		{
 			"width": "100%",
-			"fontSize": 60,
+			"fontSize": _titleFontSize,
 			"textHorizontalAlignment": "center"
 		});
-		
+
 		_titleLabel.addTo("gameMainLayout");
 		_mainVerticalLayout.addTo("gameScreen");
-		
+
 		// the width (the same with height) of a tile will be the minimum between height/width divided
 		// by the number of tiles horizontally
 		var width = (screenWidth<screenHeight?screenWidth:screenHeight) / _gameObj.getNrOfTilesX();
@@ -56,7 +67,7 @@ function GameView(gameObj, tileClickCallback)
 		{
 			"width": Math.floor(screenWidth),
 			"height": Math.floor(height),
-			"fontSize": 20,
+			"fontSize": _textFontSize,
 			"textHorizontalAlignment": "left",
 			"textVerticalAlignment" : "center",
 			"text" : "Score:"
@@ -68,57 +79,75 @@ function GameView(gameObj, tileClickCallback)
 
 		// create the question
 		// the question label height will be 80% of (screenHeight - total title height)
-		var qLabelHeight = (screenHeight - width * _gameObj.getNrOfTilesY()) * (4/5);
+		var qLabelHeight = (screenHeight - width * _gameObj.getNrOfTilesY()) * (4/5); //water fuck is this???? not used
 		_questionLabel = mosync.nativeui.create("Label", "questionLabel",
 		{
 			"width": "100%",
 			"height": Math.floor(height),
-			"fontSize": 20,
+			"fontSize": _textFontSize,
 			"textHorizontalAlignment": "center",
 			"textVerticalAlignment" : "center"
 		});
 		_questionLabel.addTo("gameMainLayout");
 	}
-	
+
 	function createTileUI()
 	{
 		var index = 0;
 
 		// the separator width/height = 5% from min(screenWidth,screenHeight) * (number_of_horizontal_tiles + 1)
-		var separatorSize = ((screenWidth<screenHeight?screenWidth:screenHeight) * (5/100)) / (_gameObj.getNrOfTilesX() + 1);
+		var separatorSize = ((screenWidth<screenHeight?screenWidth:screenHeight) * (20/100)) / (_gameObj.getNrOfTilesX() + 1);
+		var separatorHeight = ((screenWidth<screenHeight?screenWidth:screenHeight) * (10/100)) / (_gameObj.getNrOfTilesY() + 1);
+
+		var tileParentHeight = Math.floor(screenHeight * (3/5) / _gameObj.getNrOfTilesX());
+		var tileParentWidth = screenWidth;
+
+		// the tile width/height = 95% from min(screenWidth,screenHeight) * number_of_horizontal_tiles
+		var tileWidth = ((screenWidth<screenHeight?screenWidth:screenHeight) * (80/100)) / _gameObj.getNrOfTilesX();
+		var tileHeight = tileWidth;
 		
 		var separatorHorizontalLayoutName = "firstSeparatorHorizontalLayout";	  	
-		addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", Math.floor(separatorSize));
-			
+		addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", Math.floor(separatorHeight));
+
 		for (var i = 0; i < _gameObj.getNrOfTilesX(); i++)
 		{
 			var horizontalLayoutName = "horizontalLayout" + i;
-			addLayout(horizontalLayoutName, "gameMainLayout", "100%", "100%");
-			
+			addLayout(horizontalLayoutName, "gameMainLayout", tileParentWidth, tileParentHeight);
+
 			// add a separator layout before tiles
 			var tileSeparatorHorizontalLayoutName = "firstTitleSeparatorHorizontalLayout" + i;
-			addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, Math.floor(separatorSize), "100%");
+			addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, Math.floor(separatorSize), screenHeight);
 
-			// the tile width/height = 95% from min(screenWidth,screenHeight) * number_of_horizontal_tiles
-			var width = ((screenWidth<screenHeight?screenWidth:screenHeight) * (95/100)) / _gameObj.getNrOfTilesX();
-			var height = width;
-			
 			for (var j = 0; j < _gameObj.getNrOfTilesY(); j++)
 			{
 				var tileButtonName = _gameObj.getQuestion(index).getQuestionId();
-				addTileButton(tileButtonName, horizontalLayoutName, width, height, _borderBlue, _gameObj.getQuestion(index).getImagePathMedium());
+
+				switch (screenType) {
+				case SMALL_SCREEN:
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, _borderBlue, _gameObj.getQuestion(index).getImagePathSmall());
+					break;
+				case MEDIUM_SCREEN:
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, _borderBlue, _gameObj.getQuestion(index).getImagePathMedium());
+					break;
+				case LARGE_SCREEN:
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, _borderBlue, _gameObj.getQuestion(index).getImagePathLarge());
+				default:
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, _borderBlue, _gameObj.getQuestion(index).getImagePathXLarge());
+					break;
+				}
+
 				index++;
-				
+
 				var tileSeparatorHorizontalLayoutName = "titleSeparatorHorizontalLayout" + i + j;
-				addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, Math.floor(separatorSize), "100%");
+				addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, Math.floor(separatorSize), screenHeight);
 			}
-			
+
 			// add a separator layout
 			var separatorHorizontalLayoutName = "separatorHorizontalLayout" + i;	
-			addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", Math.floor(separatorSize));
+			addSeparatorToLayout(separatorHorizontalLayoutName, "gameMainLayout", "100%", Math.floor(separatorHeight));
 		}
 	}
-	
+
 	/**  	
 	 * Creates and adds a separator layout to a parent layout.
 	 * @param separatorName The name of the separator layout.
@@ -133,10 +162,10 @@ function GameView(gameObj, tileClickCallback)
 			"width": separatorWidth,
 			"height": separatorHeight
 		});
-		
+
 		separator.addTo(layoutName);
 	}
-	
+
 	/**
 	 * Creates and adds a layout to a parent layout.
 	 * @param layoutName The name of the layout to be added.
@@ -154,7 +183,7 @@ function GameView(gameObj, tileClickCallback)
 
 		layout.addTo(parentLayoutName);
 	}
-	
+
 	/**
 	 * Creates and adds a button tile to a parent layout.
 	 * @param buttonName The name of the tile button to be added.
@@ -181,7 +210,7 @@ function GameView(gameObj, tileClickCallback)
 		var buttonIndex = _buttons.length;
 		_buttons[buttonIndex] = tileButton;
 		_buttonToTileMap[buttonIndex] = buttonName;
-		
+
 		_buttons[buttonIndex].addEventListener("Clicked", function()
 			{
 				tileClickCallback(getButtonTileNumber(buttonIndex));

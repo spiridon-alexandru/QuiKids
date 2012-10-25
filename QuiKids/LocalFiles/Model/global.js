@@ -32,11 +32,28 @@ function getApplicationLanguageString()
 }
 
 /***************************************************************
- * Screen size.
+ * Screen size related variables.
  ***************************************************************/
+var SMALL_SCREEN = 0;
+var MEDIUM_SCREEN = 1;
+var LARGE_SCREEN = 2;
+var XLARGE_SCREEN = 3;
 
 var screenHeight = mosync.nativeui.screenHeight;
 var screenWidth = mosync.nativeui.screenWidth;
+var screenType;
+var fontSizeIOSTitle = 30;
+var fontSizeIOSScreen = 15;
+var fontSizeTitle = 60;
+var fontSizeScreen = 20;
+
+/***************************************************************
+ * Platform related variables
+ ***************************************************************/
+
+var isIPhoneOS = false;
+var isWindowsPhone7 = false;
+var isAndroid = false;
 
 /***************************************************************
  * Global variables (folder/file names etc).
@@ -89,6 +106,29 @@ function setMainScreenText(quickPlayText, playText,
 function setQuickPlayScreenText(title)
 {
 	quickPlayScreenText.title = title;
+}
+
+/**
+ * Sets the platfomr
+ */
+function setPlatform()
+{
+	var platform = device.platform;
+	if("iPhone OS" == platform) isIPhoneOS = true;
+	else if("Android" == platform) isAndroid = true;
+	else isWindowsPhone7 = true;
+}
+
+/**
+ * Sets the screen size related variables
+ */
+function setScreenType()
+{
+	var value = screenHeight * screenWidth;
+	if((426 * 320) >= value) screenType = SMALL_SCREEN;
+	else if((470 * 320) >= value) screenType = MEDIUM_SCREEN;
+	else if((640 * 800) >= value) screenType = LARGE_SCREEN;
+	else screenType = XLARGE_SCREEN;
 }
 
 /***************************************************************

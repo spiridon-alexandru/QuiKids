@@ -27,6 +27,13 @@
 		 */
 		function initialize()
 		{
+			document.addEventListener("deviceready", onDeviceReady, false);
+		}
+
+		function onDeviceReady()
+		{
+			setPlatform();
+			setScreenType();
 			mosync.nativeui.initUI();
 		}
 
