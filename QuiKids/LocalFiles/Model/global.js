@@ -32,6 +32,13 @@ function getApplicationLanguageString()
 }
 
 /***************************************************************
+ * Screen size.
+ ***************************************************************/
+
+var screenHeight = mosync.nativeui.screenHeight;
+var screenWidth = mosync.nativeui.screenWidth;
+
+/***************************************************************
  * Global variables (folder/file names etc).
  ***************************************************************/
 var textResourcesDirName = "TextResources";
