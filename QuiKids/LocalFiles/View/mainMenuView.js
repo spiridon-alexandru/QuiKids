@@ -104,7 +104,8 @@ function MainMenuView(title, eventCallback)
 				"width" : "100%",
 				"height": Math.floor(_titleSpacerHeight),
 				"fontSize": _titleFontSize,
-				"text" : _title
+				"text" : _title,
+				"textHorizontalAlignment" : center
 			});
 
 			_titleLabel.addTo("mainMenuMainLayout");
