@@ -4,6 +4,7 @@ function GameRepo()
 	var _fileReader;
 	var _dirReader;
 	var _textResourcesFile = null;
+	var _questionsResourcesFile = null;
 	var _callback = null;
 
 	function _readQuestions(category, language, difficulty)
@@ -31,7 +32,9 @@ function GameRepo()
 												{
 													if(entries[i].name === questionsFileName && entries[i].isFile)
 													{
-														_readQuestionsFile(entries[i]);
+														_questionsResourcesFile = entries[i];
+														if(null != _textResourcesFile)
+															_readQuestionsFile(_questionsResourcesFile);
 													}
 													if(entries[i].name == language && entries[i].isDirectory)
 													{
@@ -44,6 +47,8 @@ function GameRepo()
 																	if(entries[i].name == name && entries[i].isFile)
 																	{
 																		_textResourcesFile = entries[i];
+																		if(null != _questionsResourcesFile)
+																			_readQuestionsFile(_questionsResourcesFile);
 																		break;
 																	}
 																}
@@ -182,7 +187,6 @@ function GameRepo()
 				}
 			}
 		}
-
 		_callback();
 	};
 
