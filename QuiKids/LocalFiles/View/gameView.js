@@ -132,30 +132,30 @@ function GameView(gameObj, tileClickCallback)
 				switch (screenType) {
 				case SMALL_SCREEN:
 					_completedCard = "./img/Completed/SMALL/back.png";
-					_borderRed = "./img/Borders/Small/red.png";
-					_borderGreen = "./img/Borders/Small/green.png";
-					_borderDefault = "./img/Borders/Small/default.png";
+					_borderRed = "./img/Borders/SMALL/red.png";
+					_borderGreen = "./img/Borders/SMALL/green.png";
+					_borderDefault = "./img/Borders/SMALL/default.png";
 					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderDefault, _gameObj.getQuestion(index).getImagePathSmall());
 					break;
 				case MEDIUM_SCREEN:
 					_completedCard = "./img/Completed/MEDIUM/back.png";
-					_borderRed = "./img/Borders/Medium/red.png";
-					_borderGreen = "./img/Borders/Medium/green.png";
-					_borderDefault = "./img/Borders/Medium/default.png";
+					_borderRed = "./img/Borders/MEDIUM/red.png";
+					_borderGreen = "./img/Borders/MEDIUM/green.png";
+					_borderDefault = "./img/Borders/MEDIUM/default.png";
 					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderDefault, _gameObj.getQuestion(index).getImagePathMedium());
 					break;
 				case LARGE_SCREEN:
 					_completedCard = "./img/Completed/LARGE/back.png";
-					_borderRed = "./img/Borders/Large/red.png";
-					_borderGreen = "./img/Borders/Large/green.png";
-					_borderDefault = "./img/Borders/Large/default.png";
+					_borderRed = "./img/Borders/LARGE/red.png";
+					_borderGreen = "./img/Borders/LARGE/green.png";
+					_borderDefault = "./img/Borders/LARGE/default.png";
 					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderDefault, _gameObj.getQuestion(index).getImagePathLarge());
 					break;
 				default:
 					_completedCard = "./img/Completed/XLARGE/back.png";
-					_borderRed = "./img/Borders/XLarge/red.png";
-					_borderGreen = "./img/Borders/XLarge/green.png";
-					_borderDefault = "./img/Borders/XLarge/default.png";
+					_borderRed = "./img/Borders/XLARGE/red.png";
+					_borderGreen = "./img/Borders/XLARGE/green.png";
+					_borderDefault = "./img/Borders/XLARGE/default.png";
 					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderDefault, _gameObj.getQuestion(index).getImagePathXLarge());
 					break;
 				}
@@ -224,8 +224,8 @@ function GameView(gameObj, tileClickCallback)
 		
 		if(isWindowsPhone7)
 		{
-			var heightWP7 = Math.floor(buttonHeight) - 17;
-			var widthWP7 = Math.floor(buttonWidth) - 17;
+			var heightWP7 = Math.floor(buttonHeight) - 18;
+			var widthWP7 = Math.floor(buttonWidth) - 18;
 			
 			var tileImage = mosync.nativeui.create("Image", "tileImage" + buttonName,
 			{
