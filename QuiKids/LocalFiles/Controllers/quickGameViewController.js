@@ -84,7 +84,7 @@ function QuickGameViewController(pushScreenCallback)
 											//end game
 											if (currentQuestion === null)
 											{
-												alert("Jocul a luat sfarsit! Felicitari!");
+												alert("Game Over! Your score was: " + _score);
 												// pop the screen from the stack
 												popGameScreen();
 											}
