@@ -370,12 +370,10 @@ function GameView(gameObj, tileClickCallback)
 	this.setCompleted = function(buttonIndex)
 	{
 		var button = _buttons[buttonIndex];
-		
-		//setGreenBorder(buttonIndex);
+
+		this.setGreenBorder(buttonIndex);
 		var interval = setInterval(function()
 			{
-				//setBlueBorder(buttonIndex);
-				
 				var imageID = buttonIndex + "bgcompleted";
 				mosync.resource.loadImage(_completedCard, imageID, function(imageID, imageHandle){
 					button.setProperty("backgroundImage", imageHandle);});
