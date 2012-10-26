@@ -46,6 +46,7 @@ var fontSizeIOSTitle = 30;
 var fontSizeIOSScreen = 15;
 var fontSizeTitle = 60;
 var fontSizeScreen = 20;
+var fontSizeQuestion = 40;
 
 /***************************************************************
  * Platform related variables
@@ -64,6 +65,9 @@ var mainScreenLanguagesFileName = "mainScreenLanguages.xml";
 var quickPlayScreenLanguagesFileName = "quickPlayScreenLanguages.xml";
 var categoriesDirName = "Categories";
 var questionsFileName = "questions.xml";
+
+// the game view font colors
+var gameViewFontColor = "0x0033CC";
 
 // the main stack screen name
 var mainStackScreen = "mainStackScreen";

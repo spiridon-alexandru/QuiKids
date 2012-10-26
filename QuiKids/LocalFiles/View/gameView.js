@@ -99,7 +99,8 @@ function GameView(gameObj, tileClickCallback)
 			{
 				"width": "100%",
 				"fontSize": _titleFontSize,
-				"textHorizontalAlignment": "center"
+				"textHorizontalAlignment": "center",
+				"fontColor" : gameViewFontColor
 			});
 	
 			_titleLabel.addTo("gameMainLayout");
@@ -118,7 +119,8 @@ function GameView(gameObj, tileClickCallback)
 			"fontSize": _textFontSize,
 			"textHorizontalAlignment": "left",
 			"textVerticalAlignment" : "center",
-			"text" : "Score:"
+			"text" : "Score:",
+			"fontColor" : gameViewFontColor
 		});
 
 		_scoreLabel.addTo("gameMainLayout");
@@ -132,9 +134,10 @@ function GameView(gameObj, tileClickCallback)
 		{
 			"width": "100%",
 			"height": Math.floor(height),
-			"fontSize": _textFontSize,
+			"fontSize": fontSizeQuestion,
 			"textHorizontalAlignment": "center",
-			"textVerticalAlignment" : "center"
+			"textVerticalAlignment" : "center",
+			"fontColor" : gameViewFontColor
 		});
 		_questionLabel.addTo("gameMainLayout");
 	}
