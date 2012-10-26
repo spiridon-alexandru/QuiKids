@@ -120,6 +120,7 @@ function GameView(gameObj, tileClickCallback)
 			"textVerticalAlignment" : "center",
 			"text" : "Score:"
 		});
+		
 
 		_scoreLabel.addTo("gameMainLayout");
 
@@ -137,6 +138,14 @@ function GameView(gameObj, tileClickCallback)
 			"textVerticalAlignment" : "center"
 		});
 		_questionLabel.addTo("gameMainLayout");
+		
+		if(isIPhoneOS)
+		{
+			_scoreLabel.setProperty("fontColor", "0XFFFFFF");
+			_scoreLabel.setProperty("backgroundColor", "0X00000000");
+			_questionLabel.setProperty("fontColor", "0XFFFFFF");
+			_questionLabel.setProperty("backgroundColor", "0X00000000");
+		}
 	}
 
 	function createTileUI()
