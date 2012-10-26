@@ -7,10 +7,10 @@ function GameView(gameObj, tileClickCallback)
 	var _scoreLabel;
 	var _questionLabel;
 
-	var _borderGreen = "./img/Borders/MEDIUM/green.png";
-	var _borderRed = "./img/Borders/MEDIUM/red.png";
-	var _borderBlue = "./img/Borders/MEDIUM/blue.png";
-	var _completedCard = "./img/Colors/Large/black.png";
+	var _borderGreen;
+	var _borderRed;
+	var _borderDefault;
+	var _completedCard;
 
 	var _titleFontSize;
 	var _textFontSize;
@@ -19,6 +19,9 @@ function GameView(gameObj, tileClickCallback)
 	var _buttons = [];
 	var _buttonToTileMap = new Object();
 
+	//0 if the button is not clicked 1 otherwise
+	var buttonClickedCharacteristicArray = [];
+	
 	createUI();
 
 	/**
@@ -121,23 +124,39 @@ function GameView(gameObj, tileClickCallback)
 			// add a separator layout before tiles
 			var tileSeparatorHorizontalLayoutName = "firstTitleSeparatorHorizontalLayout" + i;
 			addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, Math.floor(separatorSize), screenHeight);
-
+			
 			for (var j = 0; j < _gameObj.getNrOfTilesY(); j++)
 			{
 				var tileButtonName = _gameObj.getQuestion(index).getQuestionId();
 
 				switch (screenType) {
 				case SMALL_SCREEN:
-					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderBlue, _gameObj.getQuestion(index).getImagePathSmall());
+					_completedCard = "./img/Completed/SMALL/back.png";
+					_borderRed = "./img/Borders/Small/red.png";
+					_borderGreen = "./img/Borders/Small/green.png";
+					_borderDefault = "./img/Borders/Small/default.png";
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderDefault, _gameObj.getQuestion(index).getImagePathSmall());
 					break;
 				case MEDIUM_SCREEN:
-					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderBlue, _gameObj.getQuestion(index).getImagePathMedium());
+					_completedCard = "./img/Completed/MEDIUM/back.png";
+					_borderRed = "./img/Borders/Medium/red.png";
+					_borderGreen = "./img/Borders/Medium/green.png";
+					_borderDefault = "./img/Borders/Medium/default.png";
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderDefault, _gameObj.getQuestion(index).getImagePathMedium());
 					break;
 				case LARGE_SCREEN:
-					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderBlue, _gameObj.getQuestion(index).getImagePathLarge());
+					_completedCard = "./img/Completed/LARGE/back.png";
+					_borderRed = "./img/Borders/Large/red.png";
+					_borderGreen = "./img/Borders/Large/green.png";
+					_borderDefault = "./img/Borders/Large/default.png";
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderDefault, _gameObj.getQuestion(index).getImagePathLarge());
 					break;
 				default:
-					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderBlue, _gameObj.getQuestion(index).getImagePathXLarge());
+					_completedCard = "./img/Completed/XLARGE/back.png";
+					_borderRed = "./img/Borders/XLarge/red.png";
+					_borderGreen = "./img/Borders/XLarge/green.png";
+					_borderDefault = "./img/Borders/XLarge/default.png";
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderDefault, _gameObj.getQuestion(index).getImagePathXLarge());
 					break;
 				}
 
@@ -193,8 +212,9 @@ function GameView(gameObj, tileClickCallback)
 	 * @param buttonWidth The button width.
 	 * @param buttonHeight The button height.
 	 */
-	function addTileButton(buttonName, parentLayoutName, buttonWidth, buttonHeight, spacerRight, borderPath, imagePath, callbackFunction)
+	function addTileButton(buttonName, parentLayoutName, buttonWidth, buttonHeight, spacerRight, borderPath, imagePath)
 	{
+		buttonClickedCharacteristicArray[buttonName] = 0;
 		var buttonParentName = "tileButtonParent" + buttonName;
 		var tileButtonParent = mosync.nativeui.create("RelativeLayout", buttonParentName, 
 		{
@@ -202,13 +222,30 @@ function GameView(gameObj, tileClickCallback)
 			"height" : Math.floor(buttonHeight)
 		});
 		
-		var tileImage = mosync.nativeui.create("Image", "tileImage" + buttonName,
+		if(isWindowsPhone7)
 		{
-			"width" : Math.floor(buttonWidth),
-			"height" : Math.floor(buttonHeight),
-			"scaleMode" : "scaleXY"
-		});
-		
+			var heightWP7 = Math.floor(buttonHeight) - 17;
+			var widthWP7 = Math.floor(buttonWidth) - 17;
+			
+			var tileImage = mosync.nativeui.create("Image", "tileImage" + buttonName,
+			{
+				"top" : 10,
+				"left" : 10,
+				"width" : widthWP7,
+				"height" : heightWP7,
+				"scaleMode" : "scaleXY"
+			});
+		}
+		else
+		{
+			var tileImage = mosync.nativeui.create("Image", "tileImage" + buttonName,
+			{
+				"width" : Math.floor(buttonWidth),
+				"height" : Math.floor(buttonHeight),
+				"scaleMode" : "scaleXY"
+			});
+		}
+
 		var tileButton = mosync.nativeui.create("ImageButton", buttonName,
 		{
 			"width": Math.floor(buttonWidth),
@@ -229,7 +266,10 @@ function GameView(gameObj, tileClickCallback)
 
 		_buttons[buttonIndex].addEventListener("Clicked", function()
 			{
-				tileClickCallback(buttonName);
+				if(0 == buttonClickedCharacteristicArray[buttonName])
+				{
+					tileClickCallback(buttonName);
+				}
 			});
 
 		tileImage.addTo(buttonParentName, function()
@@ -237,7 +277,6 @@ function GameView(gameObj, tileClickCallback)
 			_buttons[buttonIndex].addTo(buttonParentName, function()
 			{
 				tileButtonParent.addTo(parentLayoutName);
-				//callbackFunction();
 			});
 		});
 	}
@@ -323,7 +362,7 @@ function GameView(gameObj, tileClickCallback)
 	{
 		var button = _buttons[buttonIndex];
 		var imageID = buttonIndex + "bg";
-		mosync.resource.loadImage(_borderBlue, imageID, function(imageID, imageHandle){
+		mosync.resource.loadImage(_borderDefault, imageID, function(imageID, imageHandle){
 			button.setProperty("backgroundImage", imageHandle);});
 	};
 
@@ -331,4 +370,9 @@ function GameView(gameObj, tileClickCallback)
 	{
 		_scoreLabel.setProperty("text", "Score: " + value);
 	};
+	
+	this.removeClickEvent = function(button)
+	{
+		buttonClickedCharacteristicArray[button] = 1;
+	}
 };

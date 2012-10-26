@@ -77,7 +77,8 @@ function QuickGameViewController(pushScreenCallback)
 									_score += 2;
 									_quickGameView.setCompleted(questionTileMap[tileName]);
 									_quickGameView.updateScoreValue(_score);
-
+									_quickGameView.removeClickEvent(tileName);
+									
 									setNextQuestion(function()
 										{
 											//end game
