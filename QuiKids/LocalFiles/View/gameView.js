@@ -34,14 +34,56 @@ function GameView(gameObj, tileClickCallback)
 		{
 		});
 
+		var parentLayout = mosync.nativeui.create("RelativeLayout", "parentLayout",
+		{
+			"width" : screenWidth,
+			"height" : screenHeight
+		});
+		
+		parentLayout.addTo("gameScreen");
+		
 		// create the main screen layout
 		_mainVerticalLayout = mosync.nativeui.create("VerticalLayout", "gameMainLayout",
 		{
-			"width": "100%",
-			"height": "100%",
+			"width": screenWidth,
+			"height": screenHeight,
 			"childHorizontalAlignment" : "center"
 		});
 
+		var backgroundPath;
+		
+		switch (screenType) {
+		case SMALL_SCREEN:
+			backgroundPath = "./img/Background/SMALL/background.png";
+			break;
+		case MEDIUM_SCREEN:
+			backgroundPath = "./img/Background/MEDIUM/background.png";
+			break;
+		case LARGE_SCREEN:
+			backgroundPath = "./img/Background/LARGE/background.png";
+			break;
+		default:
+			backgroundPath = "./img/Background/XLARGE/background.png";
+			break;
+		}
+
+		var backgroundImage = mosync.nativeui.create("Image", "gameViewBackgroundImg",
+		{
+			"top" : 0,
+			"left" : 0,
+			"width" : screenWidth,
+			"height" : screenHeight
+		});
+		
+		var imageID = "backgroundImageGameScreen";
+		mosync.resource.loadImage(backgroundPath, imageID, function(imageID, imageHandle){
+			backgroundImage.setProperty("image", imageHandle);
+			backgroundImage.addTo("parentLayout", function()
+			{
+				_mainVerticalLayout.addTo("parentLayout");
+			});
+		});
+		
 		_titleFontSize = 60;
 		_textFontSize = 20;
 		if(isIPhoneOS)
@@ -62,7 +104,6 @@ function GameView(gameObj, tileClickCallback)
 	
 			_titleLabel.addTo("gameMainLayout");
 		}
-		_mainVerticalLayout.addTo("gameScreen");
 
 		// the width (the same with height) of a tile will be the minimum between height/width divided
 		// by the number of tiles horizontally
@@ -224,13 +265,13 @@ function GameView(gameObj, tileClickCallback)
 		
 		if(isWindowsPhone7)
 		{
-			var heightWP7 = Math.floor(buttonHeight) - 18;
-			var widthWP7 = Math.floor(buttonWidth) - 18;
+			var heightWP7 = Math.floor(buttonHeight) - 21;
+			var widthWP7 = Math.floor(buttonWidth) - 21;
 			
 			var tileImage = mosync.nativeui.create("Image", "tileImage" + buttonName,
 			{
-				"top" : 10,
-				"left" : 10,
+				"top" : 11,
+				"left" : 11,
 				"width" : widthWP7,
 				"height" : heightWP7,
 				"scaleMode" : "scaleXY"
