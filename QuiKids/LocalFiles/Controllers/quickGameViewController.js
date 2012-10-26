@@ -74,9 +74,8 @@ function QuickGameViewController(pushScreenCallback)
 							{
 								if (questionTileMap[tileName] == currentQuestionIndex)
 								{
-									alert("CORRECT");
 									_score += 2;
-									_quickGameView.setGreenBorder(questionTileMap[tileName]);
+									_quickGameView.setCompleted(questionTileMap[tileName]);
 									_quickGameView.updateScoreValue(_score);
 
 									setNextQuestion(function()

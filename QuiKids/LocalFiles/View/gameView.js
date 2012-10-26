@@ -10,6 +10,7 @@ function GameView(gameObj, tileClickCallback)
 	var _borderGreen = "./img/Borders/MEDIUM/green.png";
 	var _borderRed = "./img/Borders/MEDIUM/red.png";
 	var _borderBlue = "./img/Borders/MEDIUM/blue.png";
+	var _completedCard = "./img/Colors/Large/black.png";
 
 	var _titleFontSize;
 	var _textFontSize;
@@ -127,22 +128,20 @@ function GameView(gameObj, tileClickCallback)
 
 				switch (screenType) {
 				case SMALL_SCREEN:
-					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, _borderBlue, _gameObj.getQuestion(index).getImagePathSmall());
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderBlue, _gameObj.getQuestion(index).getImagePathSmall());
 					break;
 				case MEDIUM_SCREEN:
-					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, _borderBlue, _gameObj.getQuestion(index).getImagePathMedium());
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderBlue, _gameObj.getQuestion(index).getImagePathMedium());
 					break;
 				case LARGE_SCREEN:
-					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, _borderBlue, _gameObj.getQuestion(index).getImagePathLarge());
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderBlue, _gameObj.getQuestion(index).getImagePathLarge());
+					break;
 				default:
-					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, _borderBlue, _gameObj.getQuestion(index).getImagePathXLarge());
+					addTileButton(tileButtonName, horizontalLayoutName, tileWidth, tileHeight, Math.floor(separatorSize), _borderBlue, _gameObj.getQuestion(index).getImagePathXLarge());
 					break;
 				}
 
 				index++;
-
-				var tileSeparatorHorizontalLayoutName = "titleSeparatorHorizontalLayout" + i + j;
-				addSeparatorToLayout(tileSeparatorHorizontalLayoutName, horizontalLayoutName, Math.floor(separatorSize), screenHeight);
 			}
 
 			// add a separator layout
@@ -194,21 +193,35 @@ function GameView(gameObj, tileClickCallback)
 	 * @param buttonWidth The button width.
 	 * @param buttonHeight The button height.
 	 */
-	function addTileButton(buttonName, parentLayoutName, buttonWidth, buttonHeight, borderPath, imagePath)
+	function addTileButton(buttonName, parentLayoutName, buttonWidth, buttonHeight, spacerRight, borderPath, imagePath, callbackFunction)
 	{
+		var buttonParentName = "tileButtonParent" + buttonName;
+		var tileButtonParent = mosync.nativeui.create("RelativeLayout", buttonParentName, 
+		{
+			"width" : Math.floor(buttonWidth) + spacerRight,
+			"height" : Math.floor(buttonHeight)
+		});
+		
+		var tileImage = mosync.nativeui.create("Image", "tileImage" + buttonName,
+		{
+			"width" : Math.floor(buttonWidth),
+			"height" : Math.floor(buttonHeight),
+			"scaleMode" : "scaleXY"
+		});
+		
 		var tileButton = mosync.nativeui.create("ImageButton", buttonName,
-			{
-				"width": Math.floor(buttonWidth),
-				"height": Math.floor(buttonHeight)
-			});
+		{
+			"width": Math.floor(buttonWidth),
+			"height": Math.floor(buttonHeight)
+		});
 
 		var imageID1 = buttonName + "fg";
 		mosync.resource.loadImage(imagePath, imageID1, function(imageID, imageHandle){
-			 tileButton.setProperty("backgroundImage", imageHandle);});
+			 tileImage.setProperty("image", imageHandle);});
 
 		var imageID2 = buttonName + "bg";
 		mosync.resource.loadImage(borderPath, imageID2, function(imageID, imageHandle){
-			 tileButton.setProperty("image", imageHandle);});
+			 tileButton.setProperty("backgroundImage", imageHandle);});
 
 		var buttonIndex = _buttons.length;
 		_buttons[buttonIndex] = tileButton;
@@ -216,9 +229,17 @@ function GameView(gameObj, tileClickCallback)
 
 		_buttons[buttonIndex].addEventListener("Clicked", function()
 			{
-				tileClickCallback(getButtonTileNumber(buttonIndex));
+				tileClickCallback(buttonName);
 			});
-		_buttons[buttonIndex].addTo(parentLayoutName);
+
+		tileImage.addTo(buttonParentName, function()
+		{
+			_buttons[buttonIndex].addTo(buttonParentName, function()
+			{
+				tileButtonParent.addTo(parentLayoutName);
+				//callbackFunction();
+			});
+		});
 	}
 
 	/**
@@ -226,9 +247,9 @@ function GameView(gameObj, tileClickCallback)
 	 * @param button The button of interest.
 	 * @returns The tile text of the button.
 	 */
-	function getButtonTileNumber(buttonIndex) 
+	function getButtonTileNumber(buttonName) 
 	{
-	    return _buttonToTileMap[buttonIndex];
+	    return buttonName;
 	}
 	
 	/**
@@ -266,20 +287,36 @@ function GameView(gameObj, tileClickCallback)
 		_questionLabel.setProperty("text", questionText);
 	};
 
+	this.setCompleted = function(buttonIndex)
+	{
+		var button = _buttons[buttonIndex];
+		
+		//setGreenBorder(buttonIndex);
+		var interval = setInterval(function()
+			{
+				//setBlueBorder(buttonIndex);
+				
+				var imageID = buttonIndex + "bgcompleted";
+				mosync.resource.loadImage(_completedCard, imageID, function(imageID, imageHandle){
+					button.setProperty("backgroundImage", imageHandle);});
+				clearInterval(interval);
+			}, 500);
+	};
+
 	this.setGreenBorder = function(buttonIndex)
 	{
 		var button = _buttons[buttonIndex];
 		var imageID = buttonIndex + "bg";
 		mosync.resource.loadImage(_borderGreen, imageID, function(imageID, imageHandle){
-			button.setProperty("image", imageHandle);});
-	};
-
+			button.setProperty("backgroundImage", imageHandle);});
+	}
+	
 	this.setRedBorder = function(buttonIndex)
 	{
 		var button = _buttons[buttonIndex];
 		var imageID = buttonIndex + "bg";
 		mosync.resource.loadImage(_borderRed, imageID, function(imageID, imageHandle){
-			button.setProperty("image", imageHandle);});
+			button.setProperty("backgroundImage", imageHandle);});
 	};
 
 	this.setBlueBorder = function(buttonIndex)
@@ -287,7 +324,7 @@ function GameView(gameObj, tileClickCallback)
 		var button = _buttons[buttonIndex];
 		var imageID = buttonIndex + "bg";
 		mosync.resource.loadImage(_borderBlue, imageID, function(imageID, imageHandle){
-			button.setProperty("image", imageHandle);});
+			button.setProperty("backgroundImage", imageHandle);});
 	};
 
 	this.updateScoreValue = function(value)
