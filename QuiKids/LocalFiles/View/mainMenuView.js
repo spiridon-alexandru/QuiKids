@@ -50,10 +50,11 @@ function MainMenuView(title, eventCallback)
 	function createUI()
 	{
 		// button width = 80% of the min(screenWidth,screenHeight) / 2
-		_buttonWidth = ((screenWidth<screenHeight?screenWidth:screenHeight) * (70/100)) / 2;
-		// the separator width/height = 20% from min(screenWidth,screenHeight) / 3 
-		_separatorSize = ((screenWidth<screenHeight?screenWidth:screenHeight) * (20/100)) / 3;
-		_separatorWidth = ((screenWidth<screenHeight?screenWidth:screenHeight) * (30/100)) / 3;
+		_buttonWidth = Math.floor(((screenWidth<screenHeight?screenWidth:screenHeight) * (70/100)) / 2);
+		// the separator height = 20% from min(screenWidth,screenHeight) / 3 
+		_separatorSize = Math.floor(((screenWidth<screenHeight?screenWidth:screenHeight) * (20/100)) / 3);
+		// the separator width = 30% from min(screenWidth,screenHeight) / 3 
+		_separatorWidth = Math.floor(((screenWidth<screenHeight?screenWidth:screenHeight) * (30/100)) / 3);
 		
 		_labelHeight = Math.floor(((screenWidth<screenHeight?screenWidth:screenHeight) * (20/100)) / 3);
 		
@@ -75,10 +76,10 @@ function MainMenuView(title, eventCallback)
 		if(isIPhoneOS)
 		{
 			// the top spacer will occupy 30 % of the remaining height
-			_topSpacerHeight = 10/100 * remainingHeight;
+			_topSpacerHeight = Math.floor(10/100 * remainingHeight);
 			// the bottom bar (containing the help and about buttons) will occupy 70%
 			// of the remaining height
-			_bottomBarHeight = 80/100 * remainingHeight;
+			_bottomBarHeight = Math.floor(80/100 * remainingHeight);
 
 			_textFontSize = 11;
 				
@@ -86,15 +87,15 @@ function MainMenuView(title, eventCallback)
 			_topSpacer = mosync.nativeui.create("HorizontalLayout", "mainMenuScreenTopSpacer",
 			{
 				"width": "100%",
-				"height": Math.floor(_topSpacerHeight)
+				"height": _topSpacerHeight
 			});
 			
 			_topSpacer.addTo("mainMenuMainLayout");
 		}
 		else
 		{			
-			_titleSpacerHeight = 33/100 * remainingHeight;
-			_bottomBarHeight = 66/100 * remainingHeight;
+			_titleSpacerHeight = Math.floor(33/100 * remainingHeight);
+			_bottomBarHeight = Math.floor(66/100 * remainingHeight);
 
 			_titleFontSize = 60;
 			_textFontSize = 16;
@@ -102,7 +103,7 @@ function MainMenuView(title, eventCallback)
 			_titleLabel = mosync.nativeui.create("Label", "mainMenuScreenTitleLabel",
 			{
 				"width" : "100%",
-				"height": Math.floor(_titleSpacerHeight),
+				"height": _titleSpacerHeight,
 				"fontSize": _titleFontSize,
 				"text" : _title,
 				"textHorizontalAlignment" : "center"
@@ -139,20 +140,21 @@ function MainMenuView(title, eventCallback)
 		
 		// separator layout between the button rows
 		separatorHorizontalLayoutName = "mainMenuSeparatorHorizontalLayout2";	  	
-		addSeparatorToLayout(separatorHorizontalLayoutName, "mainMenuMainLayout", "100%", Math.floor(_separatorSize));
+		addSeparatorToLayout(separatorHorizontalLayoutName, "mainMenuMainLayout", "100%", _separatorSize);
 
 		createSecondButtonRow();
 		
 		// separator layout between the buttons and the bottom bar
 		separatorHorizontalLayoutName = "mainMenuSeparatorHorizontalLayout3";	  	
-		addSeparatorToLayout(separatorHorizontalLayoutName, "mainMenuMainLayout", "100%", Math.floor(_separatorSize));
+		addSeparatorToLayout(separatorHorizontalLayoutName, "mainMenuMainLayout", "100%", _separatorSize);
 
 		
 		// create horizontal layout that will contain the help and about buttons
 		var _thirdHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "thirdHorizontalLayout",
 		{
 			"width": "100%",
-			"height": Math.floor(_bottomBarHeight)
+			"height": _bottomBarHeight,
+			"childVerticalAlignment" : "center"
 		});
 		
 		_helpButton = mosync.nativeui.create("ImageButton", "helpButton",
@@ -214,23 +216,23 @@ function MainMenuView(title, eventCallback)
 		var _firstHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "firstHorizontalLayout",
 		{
 			"width": "100%",
-			"height": Math.floor(_buttonWidth) + _labelHeight // the height of the horizontal layout = the height of a button + the height of the label
+			"height": _buttonWidth + _labelHeight // the height of the horizontal layout = the height of a button + the height of the label
 		});
 
 		var buttonSeparatorLayoutName = "buttonSeparatorHorizontalLayout1";
-		addSeparatorToLayout(buttonSeparatorLayoutName, "firstHorizontalLayout", Math.floor(_separatorWidth), "100%");
+		addSeparatorToLayout(buttonSeparatorLayoutName, "firstHorizontalLayout", _separatorWidth, "100%");
 	
 		// create the quick play layout, button and label
 		createQuickPlayLayout("firstHorizontalLayout");		
 		
 		buttonSeparatorLayoutName = "buttonSeparatorHorizontalLayout2";
-		addSeparatorToLayout(buttonSeparatorLayoutName, "firstHorizontalLayout", Math.floor(_separatorWidth), "100%");
+		addSeparatorToLayout(buttonSeparatorLayoutName, "firstHorizontalLayout", _separatorWidth, "100%");
 		
 		// create the play layout, button and label
 		createPlayLayout("firstHorizontalLayout");
 		
 		buttonSeparatorLayoutName = "buttonSeparatorHorizontalLayout3";
-		addSeparatorToLayout(buttonSeparatorLayoutName, "firstHorizontalLayout", Math.floor(_separatorWidth), "100%");
+		addSeparatorToLayout(buttonSeparatorLayoutName, "firstHorizontalLayout", _separatorWidth, "100%");
 		
 		_firstHorizontalLayout.addTo("mainMenuMainLayout");
 	}
@@ -245,12 +247,12 @@ function MainMenuView(title, eventCallback)
 		
 		_quickPlayButton = mosync.nativeui.create("ImageButton", "quickPlayButton",
 		{
-			"width": Math.floor(_buttonWidth),
-			"height": Math.floor(_buttonWidth)
+			"width": _buttonWidth,
+			"height": _buttonWidth
 		});
 		_quickPlayLabel = mosync.nativeui.create("Label", "quickPlayLabel",
 		{
-			"width": Math.floor(_buttonWidth),
+			"width": _buttonWidth,
 			"textHorizontalAlignment": "center"
 		});
 		
@@ -269,12 +271,12 @@ function MainMenuView(title, eventCallback)
 
 		_playButton = mosync.nativeui.create("ImageButton", "playButton",
 		{
-			"width": Math.floor(_buttonWidth),
-			"height": Math.floor(_buttonWidth)
+			"width": _buttonWidth,
+			"height": _buttonWidth
 		});
 		_playLabel = mosync.nativeui.create("Label", "playLabel",
 		{
-			"width": Math.floor(_buttonWidth),
+			"width": _buttonWidth,
 			"textHorizontalAlignment": "center"
 		});
 		
@@ -288,23 +290,23 @@ function MainMenuView(title, eventCallback)
 		var _secondHorizontalLayout = mosync.nativeui.create("HorizontalLayout", "secondHorizontalLayout",
 		{
 			"width": "100%",
-			"height": Math.floor(_buttonWidth) + _labelHeight// the height of the horizontal layout = the height of a button
+			"height": _buttonWidth + _labelHeight// the height of the horizontal layout = the height of a button
 		});
 		
 		var buttonSeparatorLayoutName = "buttonSeparatorHorizontalLayout4";
-		addSeparatorToLayout(buttonSeparatorLayoutName, "secondHorizontalLayout", Math.floor(_separatorWidth), "100%");
+		addSeparatorToLayout(buttonSeparatorLayoutName, "secondHorizontalLayout", _separatorWidth, "100%");
 		
 		// create the settings layout, button and label
 		createSettingsLayout("secondHorizontalLayout");		
 		
 		buttonSeparatorLayoutName = "buttonSeparatorHorizontalLayout5";
-		addSeparatorToLayout(buttonSeparatorLayoutName, "secondHorizontalLayout", Math.floor(_separatorWidth), "100%");
+		addSeparatorToLayout(buttonSeparatorLayoutName, "secondHorizontalLayout", _separatorWidth, "100%");
 		
 		// create the achievements layout, button and label
 		createAchievementsLayout("secondHorizontalLayout");
 		
 		buttonSeparatorLayoutName = "buttonSeparatorHorizontalLayout6";
-		addSeparatorToLayout(buttonSeparatorLayoutName, "secondHorizontalLayout", Math.floor(_separatorWidth), "100%");
+		addSeparatorToLayout(buttonSeparatorLayoutName, "secondHorizontalLayout", _separatorWidth, "100%");
 		
 		_secondHorizontalLayout.addTo("mainMenuMainLayout");
 	}
@@ -319,12 +321,12 @@ function MainMenuView(title, eventCallback)
 		
 		_settingsButton = mosync.nativeui.create("ImageButton", "settingsButton",
 		{
-			"width": Math.floor(_buttonWidth),
-			"height": Math.floor(_buttonWidth)
+			"width": _buttonWidth,
+			"height": _buttonWidth
 		});
 		_settingsLabel = mosync.nativeui.create("Label", "settingsLabel",
 		{
-			"width": Math.floor(_buttonWidth),
+			"width": _buttonWidth,
 			"textHorizontalAlignment": "center"
 		});
 		
@@ -343,12 +345,12 @@ function MainMenuView(title, eventCallback)
 		
 		_achievementsButton = mosync.nativeui.create("ImageButton", "achievementsButton",
 		{
-			"width": Math.floor(_buttonWidth),
-			"height": Math.floor(_buttonWidth)
+			"width": _buttonWidth,
+			"height": _buttonWidth
 		});
 		_achievementsLabel = mosync.nativeui.create("Label", "achievementsLabel",
 		{
-			"width": Math.floor(_buttonWidth),
+			"width": _buttonWidth,
 			"textHorizontalAlignment": "center"
 		});
 		
