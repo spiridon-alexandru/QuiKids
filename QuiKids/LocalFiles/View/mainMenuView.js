@@ -201,6 +201,10 @@ function MainMenuView(title, eventCallback)
 	            _settingsButton.setProperty("backgroundImage", imageHandle);
 	        });
 		 
+		 mosync.resource.loadImage("./img/Menu/" + screenSize + "/achievements.png", "AchievementsButtonImage", function(imageID, imageHandle){
+	            _achievementsButton.setProperty("backgroundImage", imageHandle);
+	        });
+		 
 		 mosync.resource.loadImage("./img/Menu/" + screenSize + "/about.png", "AboutButtonImage", function(imageID, imageHandle){
 	            _aboutButton.setProperty("backgroundImage", imageHandle);
 	        });
