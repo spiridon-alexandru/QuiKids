@@ -92,10 +92,10 @@ function MainMenuView(title, eventCallback)
 			_topSpacer.addTo("mainMenuMainLayout");
 		}
 		else
-		{
+		{			
 			_titleSpacerHeight = 33/100 * remainingHeight;
 			_bottomBarHeight = 66/100 * remainingHeight;
-			
+
 			_titleFontSize = 60;
 			_textFontSize = 16;
 			
@@ -105,7 +105,7 @@ function MainMenuView(title, eventCallback)
 				"height": Math.floor(_titleSpacerHeight),
 				"fontSize": _titleFontSize,
 				"text" : _title,
-				"textHorizontalAlignment" : center
+				"textHorizontalAlignment" : "center"
 			});
 
 			_titleLabel.addTo("mainMenuMainLayout");

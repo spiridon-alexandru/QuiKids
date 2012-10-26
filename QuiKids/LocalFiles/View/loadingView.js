@@ -8,8 +8,7 @@ function LoadingScreen()
 	var _mainVerticalLayout = mosync.nativeui.create("VerticalLayout", "loadingScreenMainLayout",
 	{
 		"width": "100%",
-		"height": "100%",
-		"childHorizontalAlignment" : "center"
+		"height": "100%"
 	});
 	
 	var _separatorVerticalLayout1 = mosync.nativeui.create("VerticalLayout", "loadingScreenSeparatorLayout1",
@@ -28,11 +27,6 @@ function LoadingScreen()
 		"inProgress": "true"
 	});
 
-	if(isAndroid)
-	{
-		_activityIndicator.setProperty("width", activityIndicatorSize);
-	}
-	
 	var _separatorVerticalLayout2 = mosync.nativeui.create("VerticalLayout", "loadingScreenSeparatorLayout2",
 	{
 		"width": "100%",
