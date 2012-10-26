@@ -66,6 +66,14 @@ function MainMenuView(title, eventCallback)
 			"title" : _title
 		});
 		
+		var parentLayout = mosync.nativeui.create("RelativeLayout", "parentLayoutMainMenu",
+		{
+			"width" : screenWidth,
+			"height" : screenHeight
+		});
+		
+		parentLayout.addTo("mainMenuScreen");
+		
 		// create the main screen layout
 		_mainVerticalLayout = mosync.nativeui.create("VerticalLayout", "mainMenuMainLayout",
 		{
@@ -73,6 +81,40 @@ function MainMenuView(title, eventCallback)
 			"height": "100%"
 		});
 
+		var backgroundPath;
+		
+		switch (screenType) {
+		case SMALL_SCREEN:
+			backgroundPath = "./img/Background/SMALL/menuBackground.png";
+			break;
+		case MEDIUM_SCREEN:
+			backgroundPath = "./img/Background/MEDIUM/menuBackground.png";
+			break;
+		case LARGE_SCREEN:
+			backgroundPath = "./img/Background/LARGE/menuBackground.png";
+			break;
+		default:
+			backgroundPath = "./img/Background/XLARGE/menuBackground.png";
+			break;
+		}	
+		
+		var backgroundImage = mosync.nativeui.create("Image", "mainMenuBackgroundImg",
+		{
+			"top" : 0,
+			"left" : 0,
+			"width" : screenWidth,
+			"height" : screenHeight
+		});
+		
+		var imageID = "backgroundImageMainMenu";
+		mosync.resource.loadImage(backgroundPath, imageID, function(imageID, imageHandle){
+			backgroundImage.setProperty("image", imageHandle);
+			backgroundImage.addTo("parentLayoutMainMenu", function()
+			{
+				_mainVerticalLayout.addTo("parentLayoutMainMenu");
+			});
+		});
+		
 		if(isIPhoneOS)
 		{
 			// the top spacer will occupy 30 % of the remaining height
@@ -111,8 +153,6 @@ function MainMenuView(title, eventCallback)
 
 			_titleLabel.addTo("mainMenuMainLayout");
 		}
-
-		_mainVerticalLayout.addTo("mainMenuScreen");
 		
 		createButtonUI();
 		
