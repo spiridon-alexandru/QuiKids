@@ -5,8 +5,9 @@
  * @param pushScreenCallback A callback the announces the main menu view controller that the 
  *        loading of the screen is done.
  */
-function QuickGameViewController(pushScreenCallback)
+function QuickGameViewController(language, pushScreenCallback)
 {
+	var _gameLanguage = language;
 	// keeps a randomly generated game object used for quick play
 	var _randomGameObject;
 	// solvedQuestion[i] = 0 if the question was not flaged as solved, 1 otherwise
@@ -55,7 +56,7 @@ function QuickGameViewController(pushScreenCallback)
 			questionNumber = 2;
 		
 		var qArray = [];
-		_randomGameObject = new GameObject("Colors", "EN", 3, 3, "easy", qArray);
+		_randomGameObject = new GameObject("Colors", _gameLanguage, 3, 3, "easy", qArray);
 
 		for(var i = 0; i < (_randomGameObject.getNrOfTilesX() * _randomGameObject.getNrOfTilesY()); i++)
 		{
@@ -168,6 +169,9 @@ function QuickGameViewController(pushScreenCallback)
 	function popGameScreen()
 	{
 		var stackScreen = document.getNativeElementById(mainStackScreen);
+		// pop the game screen
+		stackScreen.pop();
+		// pop the language screen
 		stackScreen.pop();
 	}
 

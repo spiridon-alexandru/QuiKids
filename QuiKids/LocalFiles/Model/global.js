@@ -7,7 +7,7 @@
  ***************************************************************/
 // The languages available
 Languages = {
-	EN : 0,
+	US : 0,
 	RO : 1
 };
 
@@ -63,6 +63,7 @@ var textResourcesDirName = "TextResources";
 var languagesDirName = "Lang";
 var mainScreenLanguagesFileName = "mainScreenLanguages.xml";
 var quickPlayScreenLanguagesFileName = "quickPlayScreenLanguages.xml";
+var gameLanguageScreenLanguagesFileName = "gameLanguageScreenLanguages.xml";
 var categoriesDirName = "Categories";
 var questionsFileName = "questions.xml";
 
@@ -87,6 +88,10 @@ mainScreenText.achievements = "Achievements";
 var quickPlayScreenText = new Object();
 quickPlayScreenText.title = "Quick Play";
 
+// the game language screen defaults
+var gameLanguageScreenText = new Object();
+gameLanguageScreenText.title = "Languages";
+
 /**
  * Sets the MainScreen widget texts.
  * @param quickPlayText The quick play button text;
@@ -110,6 +115,15 @@ function setMainScreenText(quickPlayText, playText,
 function setQuickPlayScreenText(title)
 {
 	quickPlayScreenText.title = title;
+}
+
+/**
+ * Sets the GameLanguage screen widget texts.
+ * @param title The title of the game language screen.
+ */
+function setGameLanguageScreenText(title)
+{
+	gameLanguageScreenText.title = title;
 }
 
 /**

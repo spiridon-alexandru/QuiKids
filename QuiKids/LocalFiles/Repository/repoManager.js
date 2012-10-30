@@ -56,3 +56,79 @@ function initFileManager(successCallback)
 			alert("initFileManager2 error: " + error);
 		});
 }
+
+
+/**
+ * @brief Reads all the available application categories.
+ */
+function readAllCategories(successCallback)
+{
+	var categories = [];
+	var catCounter = 0;
+	
+	if (localFilesDir != undefined)
+	{
+		// set the success callback
+		callback = successCallback;
+		// read the list of directories under the resources rootDir
+		var dirReader = localFilesDir.createReader();
+		dirReader.readEntries(function(entries)
+		{
+			//find the "Category" dir
+			for(var i in entries)
+			{
+				if(entries[i].name === categoriesDirName && entries[i].isDirectory)
+				{
+					var categoriesReader = entries[i].createReader();
+					categoriesReader.readEntries(function(entries)
+					{
+						for(var i = 0; i < entries.length; i++)
+						{
+							if (entries[i].isDirectory)
+							{
+								categories[catCounter] = entries[i];
+								catCounter++;
+							}
+						}
+						successCallback(categories);
+					},
+					function(error)
+					{
+						alert("read Category dir error: " + error);
+					});
+					break;
+				}
+			}
+		},
+		function(error)
+		{
+			alert("read local files dir error: " + error);
+		});
+	}
+}
+
+function readCategoryLanguages(categoryEntry, successCallback)
+{
+	var languages = [];
+	var langCount = 0;
+
+	// read all the languages of the current category
+	var languageReader = categoryEntry.createReader();
+	languageReader.readEntries(function(entries)
+	{
+		for(var i = 0; i < entries.length; i++)
+		{
+			if (entries[i].isDirectory)
+			{
+				languages[langCount] = entries[i].name;
+				langCount++;
+			}
+		}
+			
+		successCallback(languages);
+	},
+	function(error)
+	{
+		alert("read Category dir error: " + error);
+	});
+}

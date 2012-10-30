@@ -14,9 +14,9 @@ function MainMenuViewController(pushScreenCallback)
 		{
 			case MainMenuEventTypes.PushQuickScreen:
 				loadingScreen.show();
-				_quickGameController = new QuickGameViewController(function()
+				_gameLanguageController = new GameLanguageViewController(function()
 				{
-					_quickGameController.pushScreen();
+					_gameLanguageController.pushScreen();
 					showMainStackScreen();
 				});
 				break;
@@ -36,10 +36,24 @@ function MainMenuViewController(pushScreenCallback)
 	});
 	
 	// the other controllers
-	var _quickGameController;
+	var _gameLanguageController;
 	
+	document.addEventListener("backbutton", close, true);
 	// loads the localization data onto the screen widgets
 	loadScreen();
+	
+	/**
+	 * Handle the backbutton event.
+	 */
+	function close()
+	{
+		if (_screenVisible)
+		{
+			// Close the application if the back key is pressed and the main menu screen is visible.
+			mosync.bridge.send(["close"]);
+		}
+		
+	}
 	
 	/**
 	 * Reads the screen language data from xml and shows the screen.

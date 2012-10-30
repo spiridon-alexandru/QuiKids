@@ -12,9 +12,6 @@ function GameView(gameObj, tileClickCallback)
 	var _borderDefault;
 	var _completedCard;
 
-	var _titleFontSize;
-	var _textFontSize;
-
 	// keeps a mapping between a button and its tile text
 	var _buttons = [];
 	var _buttonToTileMap = new Object();
@@ -83,14 +80,6 @@ function GameView(gameObj, tileClickCallback)
 				_mainVerticalLayout.addTo("parentLayout");
 			});
 		});
-		
-		_titleFontSize = 60;
-		_textFontSize = 20;
-		if(isIPhoneOS)
-		{
-			_titleFontSize = 25;
-			_textFontSize = 15;
-		}
 
 		// create the title label
 		if(!isIPhoneOS)
@@ -98,7 +87,7 @@ function GameView(gameObj, tileClickCallback)
 			_titleLabel = mosync.nativeui.create("Label", "gameScreenTitleLabel",
 			{
 				"width": "100%",
-				"fontSize": _titleFontSize,
+				"fontSize": fontSizeTitle,
 				"textHorizontalAlignment": "center",
 				"fontColor" : gameViewFontColor
 			});
@@ -116,7 +105,7 @@ function GameView(gameObj, tileClickCallback)
 		{
 			"width": Math.floor(screenWidth),
 			"height": Math.floor(height),
-			"fontSize": _textFontSize,
+			"fontSize": fontSizeScreen,
 			"textHorizontalAlignment": "left",
 			"textVerticalAlignment" : "center",
 			"text" : "Score:",
