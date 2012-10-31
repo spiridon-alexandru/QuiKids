@@ -1,6 +1,7 @@
 function GameLanguageView (languageClickedCallback)
 {
 	var _screen;
+	var _mainVerticalLayout;
 	var _titleLabel;
 	var _languagesListView;
 	// the height/width of a button
@@ -30,13 +31,7 @@ function GameLanguageView (languageClickedCallback)
 		{
 		});
 		
-		// create the main screen layout
-		_mainVerticalLayout = mosync.nativeui.create("VerticalLayout", "gameLanguageMainLayout",
-		{
-			"width": screenWidth,
-			"height": screenHeight,
-			"childHorizontalAlignment" : "center"
-		});
+		createScreenLayouts();
 		
 		// create the title label
 		if(!isIPhoneOS)
@@ -51,8 +46,70 @@ function GameLanguageView (languageClickedCallback)
 	
 			_titleLabel.addTo("gameLanguageMainLayout");
 		}
+	}
+	
+	/**
+	 * Creates the layouts of the game language screen and adds a background image.
+	 */
+	function createScreenLayouts()
+	{
+		// create the main screen layout
+		_mainVerticalLayout = mosync.nativeui.create("VerticalLayout", "gameLanguageMainLayout",
+		{
+			"width": screenWidth,
+			"height": screenHeight,
+			"childHorizontalAlignment" : "center"
+		});
 		
-		_mainVerticalLayout.addTo("gameLanguageScreen");
+		var gameLanguageScreenParentLayout = mosync.nativeui.create("RelativeLayout", "gameLanguageScreenParentLayout",
+		{
+			"width" : screenWidth,
+			"height" : screenHeight
+		});
+		
+		gameLanguageScreenParentLayout.addTo("gameLanguageScreen");
+	
+		addBackgroundImage();
+	}
+	
+	/**
+	 * Adds a background image to the main vertical layout.
+	 */
+	function addBackgroundImage()
+	{
+		var backgroundPath;
+		
+		switch (screenType) {
+		case SMALL_SCREEN:
+			backgroundPath = "./img/Background/SMALL/menuBackground.png";
+			break;
+		case MEDIUM_SCREEN:
+			backgroundPath = "./img/Background/MEDIUM/menuBackground.png";
+			break;
+		case LARGE_SCREEN:
+			backgroundPath = "./img/Background/LARGE/menuBackground.png";
+			break;
+		default:
+			backgroundPath = "./img/Background/XLARGE/menuBackground.png";
+			break;
+		}
+
+		var backgroundImage = mosync.nativeui.create("Image", "gameLanguageViewBackgroundImg",
+		{
+			"top" : 0,
+			"left" : 0,
+			"width" : screenWidth,
+			"height" : screenHeight
+		});
+		
+		var imageID = "backgroundImageGameLanguageScreen";
+		mosync.resource.loadImage(backgroundPath, imageID, function(imageID, imageHandle){
+			backgroundImage.setProperty("image", imageHandle);
+			backgroundImage.addTo("gameLanguageScreenParentLayout", function()
+			{
+				_mainVerticalLayout.addTo("gameLanguageScreenParentLayout");
+			});
+		});
 	}
 	
 	/**
