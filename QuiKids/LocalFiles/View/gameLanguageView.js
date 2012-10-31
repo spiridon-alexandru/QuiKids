@@ -6,6 +6,8 @@ function GameLanguageView (languageClickedCallback)
 	var _languagesListView;
 	// the height/width of a button
 	var _buttonWidth;
+	// the height/width of the separator layout
+	var _separatorSize;
 	
 	// keeps a mapping between a button and its tile text
 	var _buttons = [];
@@ -25,6 +27,8 @@ function GameLanguageView (languageClickedCallback)
 	{
 		// button width = 90% of the min(screenWidth,screenHeight) / 2
 		_buttonWidth = Math.floor(((screenWidth<screenHeight?screenWidth:screenHeight) * (90/100)) / 2);
+		// separator size (height/width) = 10% of the min(screenWidth,screenHeight) / 2
+		_separatorSize = Math.floor(((screenWidth<screenHeight?screenWidth:screenHeight) * (10/100)) / 3);
 		
 		// create the screen
 		_screen = mosync.nativeui.create("Screen", "gameLanguageScreen",
@@ -175,6 +179,24 @@ function GameLanguageView (languageClickedCallback)
 		});
 	}
 	
+	/**  	
+	 * Creates and adds a separator layout to a parent layout.
+	 * @param separatorName The name of the separator layout.
+	 * @param layoutName The name of the parent layout.
+	 * @param separatorWidth The separator width.
+	 * @param separatorHeight The separator height.
+	 */
+	function addSeparatorToLayout(separatorName, layoutName, separatorWidth, separatorHeight)
+	{
+		var separator = mosync.nativeui.create("HorizontalLayout", separatorName,
+		{
+			"width": separatorWidth,
+			"height": separatorHeight
+		});
+
+		separator.addTo(layoutName);
+	}
+	
 	/**
 	 * @brief Creates the categories list view.
 	 */
@@ -183,44 +205,45 @@ function GameLanguageView (languageClickedCallback)
 		listCreatedCallback = successCallback;
 		languageImagesToLoad = languages.length;
 		
-		_languagesListView = mosync.nativeui.create("ListView", "categoriesListView",
+		_languagesHorizontalLayout = mosync.nativeui.create("VerticalLayout", "languagesScrollableVerticalLayout",
 		{
 			"height" : "100%",
-			"width" : "100%"
+			"width" : "100%",
+			"scrollable": "true"
 		});
 		
 		// we need to add two language buttons per line
 		for (var i = 0; i < languages.length; i+=2)
-		{
-			var listItemName = "categoriesListViewIem" + i;
-			var listItem = mosync.nativeui.create("ListViewItem", listItemName,
-			{
-				"height" : "100%",
-				"width" : "100%"
-			});
-			
-			var listItemHorizontalLayoutName = "categoriesListViewIemHorizontalLayout" + i;
+		{	
+			var listItemHorizontalLayoutName = "languageHorizontalLayout" + i;
 			var listItemHorizontalLayout = mosync.nativeui.create("HorizontalLayout", listItemHorizontalLayoutName,
 			{
-				"height" : "100%",
+				"height" : _buttonWidth,
 				"width" : "100%"
 			});
-			listItemHorizontalLayout.addTo(listItemName);			
+			listItemHorizontalLayout.addTo("languagesScrollableVerticalLayout");	
+			
+			var separatorLayoutName = "firstHorizontalLayoutSeparator" + i;
+			addSeparatorToLayout(separatorLayoutName, listItemHorizontalLayoutName, _separatorSize, "100%");
 				
 			var buttonName = languages[i];
 			addButtonToParent(buttonName, listItemHorizontalLayoutName);
+			
+			separatorLayoutName = "secondHorizontalLayoutSeparator" + i;
+			addSeparatorToLayout(separatorLayoutName, listItemHorizontalLayoutName, _separatorSize, "100%");
 					
 			// if we can add another button on the same line
 			if (i + 1 < languages.length)
 			{
 				var secondButtonName = languages[i+1];
 				addButtonToParent(secondButtonName, listItemHorizontalLayoutName);
+				
+				separatorLayoutName = "thirdHorizontalLayoutSeparator" + i;
+				addSeparatorToLayout(separatorLayoutName, listItemHorizontalLayoutName, _separatorSize, "100%");
 			}
-			
-			listItem.addTo("categoriesListView");
 		}
 		
-		_languagesListView.addTo("gameLanguageMainLayout");
+		_languagesHorizontalLayout.addTo("gameLanguageMainLayout");
 	};
 	
 	/**
