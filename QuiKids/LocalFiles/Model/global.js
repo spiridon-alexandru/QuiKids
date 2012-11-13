@@ -14,23 +14,6 @@ Languages = {
 // the application language used
 var applicationLanguage = Languages.EN;
 
-/**
- * Gets a string containing the current language initials.
- */
-function getApplicationLanguageString()
-{
-	var languageString;
-	switch (applicationLanguage)
-	{
-		case Languages.RO:
-			languageString = "RO";
-			break;
-		default:
-			languageString = "EN";
-	}
-	return languageString;
-}
-
 /***************************************************************
  * Screen size related variables.
  ***************************************************************/
@@ -124,29 +107,6 @@ function setQuickPlayScreenText(title)
 function setGameLanguageScreenText(title)
 {
 	gameLanguageScreenText.title = title;
-}
-
-/**
- * Sets the platfomr
- */
-function setPlatform()
-{
-	var platform = device.platform;
-	if("iPhone OS" == platform) isIPhoneOS = true;
-	else if("Android" == platform) isAndroid = true;
-	else isWindowsPhone7 = true;
-}
-
-/**
- * Sets the screen size related variables
- */
-function setScreenType()
-{
-	var value = screenHeight * screenWidth;
-	if((426 * 320) >= value) screenType = SMALL_SCREEN;
-	else if((470 * 320) >= value) screenType = MEDIUM_SCREEN;
-	else if((640 * 800) >= value) screenType = LARGE_SCREEN;
-	else screenType = XLARGE_SCREEN;
 }
 
 /***************************************************************

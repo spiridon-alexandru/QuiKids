@@ -87,4 +87,49 @@
 		<imagePathXLarge>img/Colors/XLarge/yellow.png</imagePathXLarge>
 		<soundPath>sound.mp3</soundPath>
 	</question>
+	
+	<question>
+		<qid>12</qid>
+		<imagePathLarge>img/Colors/Large/yellow.png</imagePathLarge>
+		<imagePathMedium>img/Colors/Medium/yellow.png</imagePathMedium>
+		<imagePathSmall>img/Colors/Small/yellow.png</imagePathSmall>
+		<imagePathXLarge>img/Colors/XLarge/yellow.png</imagePathXLarge>
+		<soundPath>sound.mp3</soundPath>
+	</question>
+	
+	<question>
+		<qid>13</qid>
+		<imagePathLarge>img/Colors/Large/yellow.png</imagePathLarge>
+		<imagePathMedium>img/Colors/Medium/yellow.png</imagePathMedium>
+		<imagePathSmall>img/Colors/Small/yellow.png</imagePathSmall>
+		<imagePathXLarge>img/Colors/XLarge/yellow.png</imagePathXLarge>
+		<soundPath>sound.mp3</soundPath>
+	</question>
+	
+	<question>
+		<qid>14</qid>
+		<imagePathLarge>img/Colors/Large/yellow.png</imagePathLarge>
+		<imagePathMedium>img/Colors/Medium/yellow.png</imagePathMedium>
+		<imagePathSmall>img/Colors/Small/yellow.png</imagePathSmall>
+		<imagePathXLarge>img/Colors/XLarge/yellow.png</imagePathXLarge>
+		<soundPath>sound.mp3</soundPath>
+	</question>
+	
+	<question>
+		<qid>15</qid>
+		<imagePathLarge>img/Colors/Large/yellow.png</imagePathLarge>
+		<imagePathMedium>img/Colors/Medium/yellow.png</imagePathMedium>
+		<imagePathSmall>img/Colors/Small/yellow.png</imagePathSmall>
+		<imagePathXLarge>img/Colors/XLarge/yellow.png</imagePathXLarge>
+		<soundPath>sound.mp3</soundPath>
+	</question>
+	
+	<question>
+		<qid>16</qid>
+		<imagePathLarge>img/Colors/Large/yellow.png</imagePathLarge>
+		<imagePathMedium>img/Colors/Medium/yellow.png</imagePathMedium>
+		<imagePathSmall>img/Colors/Small/yellow.png</imagePathSmall>
+		<imagePathXLarge>img/Colors/XLarge/yellow.png</imagePathXLarge>
+		<soundPath>sound.mp3</soundPath>
+	</question>
 </questions>

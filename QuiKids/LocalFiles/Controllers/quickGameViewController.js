@@ -51,12 +51,12 @@ function QuickGameViewController(language, pushScreenCallback)
 	 */
 	function generateRandomGameObject()
 	{
-		var questionNumber = Math.floor(Math.random() * 4 + 1);
-		if (questionNumber === 1)
-			questionNumber = 2;
-		
 		var qArray = [];
-		_randomGameObject = new GameObject("Colors", _gameLanguage, 3, 3, "easy", qArray);
+		
+		var randomTileGridSize = getRandomTileGridSize();
+		_randomGameObject = new GameObject("Colors", _gameLanguage,
+											randomTileGridSize[0], randomTileGridSize[1],
+											"easy", qArray);
 
 		for(var i = 0; i < (_randomGameObject.getNrOfTilesX() * _randomGameObject.getNrOfTilesY()); i++)
 		{
@@ -110,6 +110,23 @@ function QuickGameViewController(language, pushScreenCallback)
 						loadScreen();
 					});
 				});
+	}
+	
+	/**
+	 * Gets an array containing the screen size based on the
+	 * available screen sizes.
+	 */
+	function getRandomTileGridSize()
+	{
+		var screenSizes = getAvailableTileFormats();
+		// we calculate a random index based on the length of the available screen sizes
+		var randIndex = Math.floor(Math.random() * screenSizes.length);
+		
+		var randGridSize = [];
+		randGridSize[0] = screenSizes[randIndex][0];
+		randGridSize[1] = screenSizes[randIndex][1];
+		
+		return randGridSize;
 	}
 
 	/**
