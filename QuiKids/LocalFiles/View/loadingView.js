@@ -41,7 +41,7 @@ function LoadingScreen()
 	/**
 	 * Shows the loading screen.
 	 */
-	this.show = function()
+	this.showUI = function()
 	{
 		_screen.show();
 	};

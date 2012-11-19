@@ -10,6 +10,7 @@
 	<script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
 	<script type="text/javascript" charset="utf-8" src="View/loadingView.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Model/global.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Model/events.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Model/util.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Model/questionObject.js"></script>
 	<script type="text/javascript" charset="utf-8" src="Model/gameObject.js"></script>
@@ -51,9 +52,9 @@
 		mosync.nativeui.UIReady = function()
 		{
 			// create the main application view controller and show it
-			var applicationController = new ApplicationController(document.getNativeElementById(mainStackScreen));
-
-			applicationController.show();
+			var applicationController = new ApplicationController();
+			applicationController.initUI();
+			applicationController.pushScreen();
 		}
 	</script>
 </head>

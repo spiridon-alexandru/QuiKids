@@ -10,20 +10,45 @@ function QuickGameViewController(language, pushScreenCallback)
 	var _gameLanguage = language;
 	// keeps a randomly generated game object used for quick play
 	var _randomGameObject;
-	// solvedQuestion[i] = 0 if the question was not flaged as solved, 1 otherwise
-	var solvedQuestion = [];
+	// _solvedQuestion[i] = 0 if the question was not flaged as solved, 1 otherwise
+	var _solvedQuestion = [];
 	var _quickGameView;
 	var _score = 0;
 
-	generateRandomGameObject();
-
 	// Maps the questions to the tile text.
-	var questionTileMap = new Object();
-	
+	var _questionTileMap;
 	// the number of unsolved questions
-	var remainingQuestions = _randomGameObject.getNrOfTilesX() * _randomGameObject.getNrOfTilesY();
+	var _remainingQuestions;
 	// the index of the current question to be answered
-	var currentQuestionIndex;
+	var _currentQuestionIndex;
+	
+	/**
+	 * Initializes the screen and it's dependencies.
+	 * Should be called before pushing the screen.
+	 */
+	this.initUI = function()
+	{
+		generateRandomGameObject();
+		
+		_questionTileMap = new Object();
+		_remainingQuestions = _randomGameObject.getNrOfTilesX() * _randomGameObject.getNrOfTilesY();
+	}
+	
+	/**
+	 * Returns the game screen.
+	 */
+	this.getScreen = function()
+	{
+		return _quickGameView.getScreen();
+	};
+
+	/**
+	 * Pushes the game screen into the main stack screen.
+	 */
+	this.pushScreen = function()
+	{
+		_quickGameView.getScreen().pushTo(mainStackScreen);
+	};
 	
 	/**
 	 * Reads the screen language data from xml and shows the screen.
@@ -60,56 +85,77 @@ function QuickGameViewController(language, pushScreenCallback)
 
 		for(var i = 0; i < (_randomGameObject.getNrOfTilesX() * _randomGameObject.getNrOfTilesY()); i++)
 		{
-			solvedQuestion[i] = 0;
+			_solvedQuestion[i] = 0;
 		}
 
 		var gRepo = new GameRepo();
 
-		gRepo.fillGameObjectQuestions(_randomGameObject, function()
-			{
-				generateQuestionToTileMapping();
-				setNextQuestion(function()
-					{
-						// create a default value
-						_quickGameView =  new GameView(_randomGameObject, function(tileName)
-							{
-								if (questionTileMap[tileName] == currentQuestionIndex)
-								{
-									_score += 2;
-									_quickGameView.setCompleted(questionTileMap[tileName]);
-									_quickGameView.updateScoreValue(_score);
-									_quickGameView.removeClickEvent(tileName);
-									
-									setNextQuestion(function()
-										{
-											//end game
-											if (currentQuestion === null)
-											{
-												alert("Game Over! Your score was: " + _score);
-												// pop the screen from the stack
-												popGameScreen();
-											}
+		gRepo.fillGameObjectQuestions(_randomGameObject, gameObjectQuestionsFilled);
+	}
+	
+	/**
+	 * Gets called when the game object questions have been filled.
+	 */
+	function gameObjectQuestionsFilled()
+	{
+		generateQuestionToTileMapping();
+		setNextQuestion(createGameView);
+	}
+	
+	/**
+	 * Gets called after the next question has been set.
+	 * Creates the gameView.
+	 */
+	function createGameView()
+	{
+		// create a default value
+		_quickGameView =  new GameView(_randomGameObject, gameViewLoaded);
 
-											_quickGameView.setQuestionText(currentQuestion.getText());
-										});
-								}
-								else
-								{
-									//alert("INCORRECT");
-									_score -= 1;
-									_quickGameView.updateScoreValue(_score);
-									_quickGameView.setRedBorder(questionTileMap[tileName]);
-									var interval = setInterval(function(){ _quickGameView.setBlueBorder(questionTileMap[tileName]); clearInterval(interval); }, 500);
-								}
-							});
+		_quickGameView.setQuestionText(currentQuestion.getText());
 
-						_quickGameView.setQuestionText(currentQuestion.getText());
+		//alert("current question" + currentQuestion);
+		// loads the localization data onto the screen widgets
+		loadScreen();
+	}
+	
+	/**
+	 * Gets called when the game view has been loaded.
+	 */
+	function gameViewLoaded(tileName)
+	{
+		if (_questionTileMap[tileName] == _currentQuestionIndex)
+		{
+			_score += 2;
+			_quickGameView.setCompleted(_questionTileMap[tileName]);
+			_quickGameView.updateScoreValue(_score);
+			_quickGameView.removeClickEvent(tileName);
+			
+			setNextQuestion(handleNextQuestion);
+		}
+		else
+		{
+			_score -= 1;
+			_quickGameView.updateScoreValue(_score);
+			_quickGameView.setRedBorder(_questionTileMap[tileName]);
+			var interval = setInterval(function(){ _quickGameView.setBlueBorder(_questionTileMap[tileName]); clearInterval(interval); }, 500);
+		}
+	}
+	
+	/**
+	 * Gets called after the next question has been set. Checks if the game has ended. If so,
+	 * pops the screen; sets the next question text otherwise.
+	 */
+	function handleNextQuestion()
+	{
+		//end game
+		if (currentQuestion === null)
+		{
+			alert("Game Over! Your score was: " + _score);
+			// pop the screen from the stack
+			popGameScreen();
+		}
 
-						//alert("current question" + currentQuestion);
-						// loads the localization data onto the screen widgets
-						loadScreen();
-					});
-				});
+		_quickGameView.setQuestionText(currentQuestion.getText());
 	}
 	
 	/**
@@ -131,9 +177,9 @@ function QuickGameViewController(language, pushScreenCallback)
 
 	/**
 	 * Maps every tile name to the question index.
-	 * ex: questionTileMap["00"] = 0 // the first random question will occupy the
+	 * ex: _questionTileMap["00"] = 0 // the first random question will occupy the
 	 * tile at coordinates (0,0) inside the game view
-	 *     questionTileMap["01"] = 0 ...
+	 *     _questionTileMap["01"] = 0 ...
 	 */
 	function generateQuestionToTileMapping()
 	{
@@ -144,7 +190,7 @@ function QuickGameViewController(language, pushScreenCallback)
 			for (var j = 0; j < tilesPerAxis; j++)
 			{
 				var tile = _randomGameObject.getQuestion(index).getQuestionId();
-				questionTileMap[tile] = index;
+				_questionTileMap[tile] = index;
 				index++;
 			}
 		}
@@ -157,18 +203,18 @@ function QuickGameViewController(language, pushScreenCallback)
 	 */
 	function setNextQuestion(successCallback)
 	{
-		var questionNumber = Math.floor(Math.random() * (remainingQuestions - 1) + 1);
+		var questionNumber = Math.floor(Math.random() * (_remainingQuestions - 1) + 1);
 		var nrNotUsed = 0;
 		for (var i = 0; i < (_randomGameObject.getNrOfTilesX() * _randomGameObject.getNrOfTilesY()); i++)
 		{
-			if (solvedQuestion[i] === 0)
+			if (_solvedQuestion[i] === 0)
 			{
 				nrNotUsed++;
 				if (nrNotUsed === questionNumber)
 				{
-					remainingQuestions--;
-					solvedQuestion[i] = 1;
-					currentQuestionIndex = i;
+					_remainingQuestions--;
+					_solvedQuestion[i] = 1;
+					_currentQuestionIndex = i;
 					currentQuestion = _randomGameObject.getQuestion(i);
 					successCallback();
 					return;
@@ -191,20 +237,4 @@ function QuickGameViewController(language, pushScreenCallback)
 		// pop the language screen
 		stackScreen.pop();
 	}
-
-	/**
-	 * Returns the game screen.
-	 */
-	this.getScreen = function()
-	{
-		return _quickGameView.getScreen();
-	};
-
-	/**
-	 * Pushes the game screen into the main stack screen.
-	 */
-	this.pushScreen = function()
-	{
-		_quickGameView.getScreen().pushTo(mainStackScreen);
-	};
 }

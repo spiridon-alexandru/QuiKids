@@ -1,11 +1,3 @@
-MainMenuEventTypes = {PushQuickScreen:0,
-		PushPlayScreen:1,
-		PushSettingsScreen:2,
-		PushAchievementsScreen:3,
-		PushHelpScreen:4,
-		PushAboutScreen:5
-		}
-
 function MainMenuView(title, eventCallback)
 {
 	var _screen;

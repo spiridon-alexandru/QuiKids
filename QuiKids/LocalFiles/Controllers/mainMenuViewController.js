@@ -8,39 +8,31 @@ function MainMenuViewController(pushScreenCallback)
 {
 	// this is the main menu screen, initialized with the application title and
 	// the button pressed callback
-	var _mainMenuView = new MainMenuView("QuiKids", function(eventType)
-	{
-		switch(eventType)
-		{
-			case MainMenuEventTypes.PushQuickScreen:
-				loadingScreen.show();
-				_gameLanguageController = new GameLanguageViewController(function()
-				{
-					_gameLanguageController.pushScreen();
-					showMainStackScreen();
-				});
-				break;
-			case MainMenuEventTypes.PushPlayScreen:
-				break;
-			case MainMenuEventTypes.PushSettingsScreen:
-				break;
-			case MainMenuEventTypes.PushAchievementsScreen:
-				break;
-			case MainMenuEventTypes.PushHelpScreen:
-				break;
-			case MainMenuEventTypes.PushAboutScreen:
-				break;
-			default:
-				alert("Wrong MainMenuEventType");
-		}
-	});
+	var _mainMenuView;
 	
 	// the other controllers
 	var _gameLanguageController;
 	
-	document.addEventListener("backbutton", close, true);
-	// loads the localization data onto the screen widgets
-	loadScreen();
+	/**
+	 * Initializes the screen and it's dependencies.
+	 * Should be called before pushing the screen.
+	 */
+	this.initUI = function()
+	{
+		_mainMenuView = new MainMenuView("QuiKids", handleMainMenuViewEvent);
+		
+		document.addEventListener("backbutton", close, true);
+		// loads the localization data onto the screen widgets
+		loadScreen();
+	};
+	
+	/**
+	 * Pushes the main menu screen to the main stack screen.
+	 */
+	this.pushScreen = function()
+	{
+		_mainMenuView.getScreen().pushTo(mainStackScreen);
+	};
 	
 	/**
 	 * Handle the backbutton event.
@@ -68,6 +60,44 @@ function MainMenuViewController(pushScreenCallback)
 	}
 	
 	/**
+	 * Handles a main menu view event. Initializes and pushes new screens if needed.
+	 * @param eventType One of the MainMenuEventTypes (see events.js).
+	 */
+	function handleMainMenuViewEvent(eventType)
+	{
+		switch(eventType)
+		{
+			case MainMenuEventTypes.PushQuickScreen:
+				loadingScreen.showUI();
+				_gameLanguageController = new GameLanguageViewController(gameLanguageControllerLoaded);
+				// gets called before the above callback
+				_gameLanguageController.initUI();
+				break;
+			case MainMenuEventTypes.PushPlayScreen:
+				break;
+			case MainMenuEventTypes.PushSettingsScreen:
+				break;
+			case MainMenuEventTypes.PushAchievementsScreen:
+				break;
+			case MainMenuEventTypes.PushHelpScreen:
+				break;
+			case MainMenuEventTypes.PushAboutScreen:
+				break;
+			default:
+				alert("Wrong MainMenuEventType");
+		}
+	}
+	
+	/**
+	 * Gets called when the game language controller has finished loading.
+	 */
+	function gameLanguageControllerLoaded()
+	{
+		_gameLanguageController.pushScreen();
+		showMainStackScreen();
+	}
+	
+	/**
 	 * Updates the UI with the localization texts.
 	 */
 	function updateUI()
@@ -86,12 +116,4 @@ function MainMenuViewController(pushScreenCallback)
 		var stackScreen = document.getNativeElementById(mainStackScreen);
 		stackScreen.show();
 	}
-	
-	/**
-	 * Pushes the main menu screen to the main stack screen.
-	 */
-	this.pushScreen = function()
-	{
-		_mainMenuView.getScreen().pushTo(mainStackScreen);
-	};
 }

@@ -13,50 +13,18 @@ function GameLanguageViewController(pushScreenCallback)
 
 	// this is the game language screen, initialized with the application title and
 	// the button pressed callback
-	var _gameLanguageView = new GameLanguageView(function(language)
-	{
-		loadingScreen.show();
-		_quickGameController = new QuickGameViewController(language, function()
-		{
-			_quickGameController.pushScreen();
-			showMainStackScreen();
-		});
-	});
-	
-	// loads the localization data onto the screen widgets
-	loadScreen();
+	var _gameLanguageView;
 	
 	/**
-	 * Reads the screen language data from xml and shows the screen.
+	 * Initializes the screen and it's dependencies.
+	 * Should be called before pushing the screen.
 	 */
-	function loadScreen()
+	this.initUI = function()
 	{
-		readGameLanguageScreenLanguageFile(function ()
-		{
-			updateUI();
-			readAllCategories(function(categories)
-			{
-				// select a random category
-				var randomIndex = Math.floor(Math.random() * categories.length);
-				_selectedCategory = categories[randomIndex];
-				
-				readCategoryLanguages(_selectedCategory, function(languages)
-				{
-					_gameLanguageView.createLanguagesList(languages, function()
-					{
-						pushScreenCallback();
-					});
-				});
-			});
-		});
-	}
-	
-	/**
-	 * Updates the UI with the localization texts.
-	 */
-	function updateUI()
-	{
-		_gameLanguageView.setScreenTitle(gameLanguageScreenText.title);
+		_gameLanguageView = new GameLanguageView(gameViewLoaded);
+		
+		// loads the localization data onto the screen widgets
+		loadScreen();
 	}
 	
 	/**
@@ -66,6 +34,78 @@ function GameLanguageViewController(pushScreenCallback)
 	{
 		_gameLanguageView.getScreen().pushTo(mainStackScreen);
 	};
+	
+	/**
+	 * Reads the screen language data from xml and shows the screen.
+	 */
+	function loadScreen()
+	{
+		readGameLanguageScreenLanguageFile(gameLanguageScreenLanguageFileRead);
+	}
+	
+	/**
+	 * Gets called when the game language screen file has been read.
+	 */
+	function gameLanguageScreenLanguageFileRead()
+	{
+		updateUI();
+		readAllCategories(allCategoriesRead);
+	}
+	
+	/**
+	 * Gets called when all categories have been read.
+	 */
+	function allCategoriesRead(categories)
+	{
+		// select a random category
+		var randomIndex = Math.floor(Math.random() * categories.length);
+		_selectedCategory = categories[randomIndex];
+		
+		readCategoryLanguages(_selectedCategory, categoryLanguageFileRead);
+	}
+	
+	/**
+	 * Gets called when the category language file has been read.
+	 */
+	function categoryLanguageFileRead(languages)
+	{
+		_gameLanguageView.createLanguagesList(languages, gameLanguageViewLoaded);
+	}
+	
+	/**
+	 * Gets called when the game language view has been loaded.
+	 */
+	function gameLanguageViewLoaded()
+	{
+		pushScreenCallback();
+	}
+	
+	/**
+	 * Gets called when the game view has finished loading.
+	 */
+	function gameViewLoaded(language)
+	{
+		loadingScreen.showUI();
+		_quickGameController = new QuickGameViewController(language, quickGameViewControllerLoaded);
+		_quickGameController.initUI();
+	}
+	
+	/**
+	 * Gets called when the quick game view controller has finished loading.
+	 */
+	function quickGameViewControllerLoaded()
+	{
+		_quickGameController.pushScreen();
+		showMainStackScreen();
+	}
+	
+	/**
+	 * Updates the UI with the localization texts.
+	 */
+	function updateUI()
+	{
+		_gameLanguageView.setScreenTitle(gameLanguageScreenText.title);
+	}
 	
 	/**
 	 * Shows the main stack screen/
