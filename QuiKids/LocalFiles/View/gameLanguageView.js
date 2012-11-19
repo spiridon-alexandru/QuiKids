@@ -15,15 +15,17 @@ function GameLanguageView (languageClickedCallback)
 	
 	// used to announce the language controller that all the images have
 	// been loaded and the screen can be shown
-	var listCreatedCallback;
-	var languageImagesToLoad;
+	var _listCreatedCallback;
+	var _languageImagesToLoad;
 	
-	createUI();
+	// variables related to the view resources
+	var _gameLanguageScreenBackgroundFileName = "menuBackground.png";
+	var _languageScreenImageDirName = "Languages";
 
 	/**
 	 * Creates the UI of the quick game.
 	 */
-	function createUI()
+	this.createUI = function()
 	{
 		// button width = 90% of the min(screenWidth,screenHeight) / 2
 		_buttonWidth = Math.floor(((screenWidth<screenHeight?screenWidth:screenHeight) * (90/100)) / 2);
@@ -53,157 +55,12 @@ function GameLanguageView (languageClickedCallback)
 	}
 	
 	/**
-	 * Creates the layouts of the game language screen and adds a background image.
-	 */
-	function createScreenLayouts()
-	{
-		// create the main screen layout
-		_mainVerticalLayout = mosync.nativeui.create("VerticalLayout", "gameLanguageMainLayout",
-		{
-			"width": screenWidth,
-			"height": screenHeight,
-			"childHorizontalAlignment" : "center"
-		});
-		
-		var gameLanguageScreenParentLayout = mosync.nativeui.create("RelativeLayout", "gameLanguageScreenParentLayout",
-		{
-			"width" : screenWidth,
-			"height" : screenHeight
-		});
-		
-		gameLanguageScreenParentLayout.addTo("gameLanguageScreen");
-	
-		addBackgroundImage();
-	}
-	
-	/**
-	 * Adds a background image to the main vertical layout.
-	 */
-	function addBackgroundImage()
-	{
-		var backgroundPath;
-		
-		switch (screenType) {
-		case SMALL_SCREEN:
-			backgroundPath = "./img/Background/SMALL/menuBackground.png";
-			break;
-		case MEDIUM_SCREEN:
-			backgroundPath = "./img/Background/MEDIUM/menuBackground.png";
-			break;
-		case LARGE_SCREEN:
-			backgroundPath = "./img/Background/LARGE/menuBackground.png";
-			break;
-		default:
-			backgroundPath = "./img/Background/XLARGE/menuBackground.png";
-			break;
-		}
-
-		var backgroundImage = mosync.nativeui.create("Image", "gameLanguageViewBackgroundImg",
-		{
-			"top" : 0,
-			"left" : 0,
-			"width" : screenWidth,
-			"height" : screenHeight
-		});
-		
-		var imageID = "backgroundImageGameLanguageScreen";
-		mosync.resource.loadImage(backgroundPath, imageID, function(imageID, imageHandle){
-			backgroundImage.setProperty("image", imageHandle);
-			backgroundImage.addTo("gameLanguageScreenParentLayout", function()
-			{
-				_mainVerticalLayout.addTo("gameLanguageScreenParentLayout");
-			});
-		});
-	}
-	
-	/**
-	 * Adds a button to a parent layout.
-	 * @param buttonName The button name.
-	 * @param parentName The parent name.
-	 */
-	function addButtonToParent(buttonName, parentName)
-	{
-		var button = mosync.nativeui.create("ImageButton", buttonName,
-		{
-			"width": _buttonWidth,
-			"height": _buttonWidth
-		});
-
-		var buttonIndex = _buttons.length;
-		_buttons[buttonIndex] = button;
-		_buttonToTileMap[buttonIndex] = buttonName;
-		
-		addImageToButton(button, buttonName);
-
-		_buttons[buttonIndex].addEventListener("Clicked", function()
-		{
-			languageClickedCallback(_buttonToTileMap[buttonIndex]);
-		});
-		
-		button.addTo(parentName);
-	}
-	
-	/**
-	 * Adds the background image for a image button.
-	 * @param button The image button.
-	 * @param imageName The name of the image file (without extension).
-	 */
-	function addImageToButton(button, imageName)
-	{
-		var imageID = imageName;
-		var imagePath = "./img/Languages/";
-		switch (screenType) {
-		case SMALL_SCREEN:
-			imagePath += "SMALL/";
-			break;
-		case MEDIUM_SCREEN:
-			imagePath += "MEDIUM/";
-			break;
-		case LARGE_SCREEN:
-			imagePath += "LARGE/";
-			break;
-		default:
-			imagePath += "XLARGE/";
-			break;
-		}
-		imagePath += imageName.toLowerCase() + ".png";
-		
-		mosync.resource.loadImage(imagePath, imageID, function(imageID, imageHandle){
-			button.setProperty("backgroundImage", imageHandle);
-			languageImagesToLoad--;
-			if (languageImagesToLoad == 0)
-			{
-				// all the images have been loaded
-				listCreatedCallback();
-			}
-		});
-	}
-	
-	/**  	
-	 * Creates and adds a separator layout to a parent layout.
-	 * @param separatorName The name of the separator layout.
-	 * @param layoutName The name of the parent layout.
-	 * @param separatorWidth The separator width.
-	 * @param separatorHeight The separator height.
-	 */
-	function addSeparatorToLayout(separatorName, layoutName, separatorWidth, separatorHeight)
-	{
-		var separator = mosync.nativeui.create("HorizontalLayout", separatorName,
-		{
-			"width": separatorWidth,
-			"height": separatorHeight
-		});
-
-		separator.addTo(layoutName);
-	}
-	
-	/**
 	 * @brief Creates the categories list view.
 	 */
 	this.createLanguagesList = function (languages, successCallback)
 	{
-		listCreatedCallback = successCallback;
-		languageImagesToLoad = languages.length;
+		_listCreatedCallback = successCallback;
+		_languageImagesToLoad = languages.length;
 		
 		_languagesHorizontalLayout = mosync.nativeui.create("VerticalLayout", "languagesScrollableVerticalLayout",
 		{
@@ -271,4 +128,160 @@ function GameLanguageView (languageClickedCallback)
 	{
 		_titleLabel.setProperty("text", title);
 	};
+	
+	/**
+	 * Creates the layouts of the game language screen and adds a background image.
+	 */
+	function createScreenLayouts()
+	{
+		// create the main screen layout
+		_mainVerticalLayout = mosync.nativeui.create("VerticalLayout", "gameLanguageMainLayout",
+		{
+			"width": screenWidth,
+			"height": screenHeight,
+			"childHorizontalAlignment" : "center"
+		});
+		
+		var gameLanguageScreenParentLayout = mosync.nativeui.create("RelativeLayout", "gameLanguageScreenParentLayout",
+		{
+			"width" : screenWidth,
+			"height" : screenHeight
+		});
+		
+		gameLanguageScreenParentLayout.addTo("gameLanguageScreen");
+	
+		addBackgroundImage();
+	}
+	
+	/**
+	 * Adds a background image to the main vertical layout.
+	 */
+	function addBackgroundImage()
+	{
+		var backgroundPath = getBackgroundImagePath();
+
+		var backgroundImage = mosync.nativeui.create("Image", "gameLanguageViewBackgroundImg",
+		{
+			"top" : 0,
+			"left" : 0,
+			"width" : screenWidth,
+			"height" : screenHeight
+		});
+		
+		var imageID = "backgroundImageGameLanguageScreen";
+		mosync.resource.loadImage(backgroundPath, imageID, function(imageID, imageHandle){
+			backgroundImage.setProperty("image", imageHandle);
+			backgroundImage.addTo("gameLanguageScreenParentLayout", function()
+			{
+				_mainVerticalLayout.addTo("gameLanguageScreenParentLayout");
+			});
+		});
+	}
+	
+	/**
+	 * Adds a button to a parent layout.
+	 * @param buttonName The button name.
+	 * @param parentName The parent name.
+	 */
+	function addButtonToParent(buttonName, parentName)
+	{
+		var button = mosync.nativeui.create("ImageButton", buttonName,
+		{
+			"width": _buttonWidth,
+			"height": _buttonWidth
+		});
+
+		var buttonIndex = _buttons.length;
+		_buttons[buttonIndex] = button;
+		_buttonToTileMap[buttonIndex] = buttonName;
+		
+		addImageToButton(button, buttonName);
+
+		_buttons[buttonIndex].addEventListener("Clicked", function()
+		{
+			languageClickedCallback(_buttonToTileMap[buttonIndex]);
+		});
+		
+		button.addTo(parentName);
+	}
+	
+	/**
+	 * Adds the background image for a image button.
+	 * @param button The image button.
+	 * @param imageName The name of the image file (without extension).
+	 */
+	function addImageToButton(button, imageName)
+	{
+		var imageID = imageName;
+		var imagePath = "./" + rootImageDir + "/" + _languageScreenImageDirName + "/";
+		switch (screenType) {
+		case SMALL_SCREEN:
+			imagePath += SCREENSIZE.SMALL + "/";
+			break;
+		case MEDIUM_SCREEN:
+			imagePath += SCREENSIZE.MEDIUM + "/";
+			break;
+		case LARGE_SCREEN:
+			imagePath += SCREENSIZE.LARGE + "/";
+			break;
+		default:
+			imagePath += SCREENSIZE.XLARGE + "/";
+			break;
+		}
+		imagePath += imageName.toLowerCase() + ".png";
+		
+		mosync.resource.loadImage(imagePath, imageID, function(imageID, imageHandle){
+			button.setProperty("backgroundImage", imageHandle);
+			_languageImagesToLoad--;
+			if (_languageImagesToLoad == 0)
+			{
+				// all the images have been loaded
+				_listCreatedCallback();
+			}
+		});
+	}
+	
+	/**  	
+	 * Creates and adds a separator layout to a parent layout.
+	 * @param separatorName The name of the separator layout.
+	 * @param layoutName The name of the parent layout.
+	 * @param separatorWidth The separator width.
+	 * @param separatorHeight The separator height.
+	 */
+	function addSeparatorToLayout(separatorName, layoutName, separatorWidth, separatorHeight)
+	{
+		var separator = mosync.nativeui.create("HorizontalLayout", separatorName,
+		{
+			"width": separatorWidth,
+			"height": separatorHeight
+		});
+
+		separator.addTo(layoutName);
+	}
+	
+	/**
+	 * Returns the game language screen background image path based on the screen size.
+	 */
+	function getBackgroundImagePath()
+	{
+		var imagePath = "./" + rootImageDir + "/" + backgroundImageDir;
+		var backgroundPath;
+		switch (screenType) 
+		{
+			case SMALL_SCREEN:
+				backgroundPath = imagePath + "/" + SCREENSIZE.SMALL;
+				break;
+			case MEDIUM_SCREEN:
+				backgroundPath = imagePath + "/" + SCREENSIZE.MEDIUM;
+				break;
+			case LARGE_SCREEN:
+				backgroundPath = imagePath + "/" + SCREENSIZE.LARGE;
+				break;
+			default:
+				backgroundPath = imagePath + "/" + SCREENSIZE.XLARGE;
+				break;
+		}
+		backgroundPath += "/" + _gameLanguageScreenBackgroundFileName;
+		return backgroundPath;
+	}
 };

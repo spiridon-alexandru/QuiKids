@@ -128,6 +128,7 @@ function QuickGameViewController(language, pushScreenCallback)
 	{
 		// create a default value
 		_quickGameView =  new GameView(_randomGameObject, gameViewLoaded);
+		_quickGameView.createUI();
 
 		_quickGameView.setQuestionText(currentQuestion.getText());
 

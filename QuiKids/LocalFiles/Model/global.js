@@ -17,6 +17,14 @@ var applicationLanguage = Languages.EN;
 /***************************************************************
  * Screen size related variables.
  ***************************************************************/
+var SCREENSIZE = 
+	{
+		SMALL: "SMALL",
+		MEDIUM: "MEDIUM",
+		LARGE: "LARGE",
+		XLARGGE: "XLARGE"
+	};
+
 var SMALL_SCREEN = 0;
 var MEDIUM_SCREEN = 1;
 var LARGE_SCREEN = 2;
@@ -42,6 +50,9 @@ var isAndroid = false;
 /***************************************************************
  * Global variables (folder/file names etc).
  ***************************************************************/
+var rootImageDir = "img";
+var backgroundImageDir = "Background";
+
 var textResourcesDirName = "TextResources";
 var languagesDirName = "Lang";
 var mainScreenLanguagesFileName = "mainScreenLanguages.xml";
@@ -113,3 +124,4 @@ function setGameLanguageScreenText(title)
  * Loading screen initialization.
  ***************************************************************/
 var loadingScreen = new LoadingScreen();
+loadingScreen.createUI();

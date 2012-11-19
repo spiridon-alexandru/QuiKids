@@ -20,6 +20,7 @@ function MainMenuViewController(pushScreenCallback)
 	this.initUI = function()
 	{
 		_mainMenuView = new MainMenuView("QuiKids", handleMainMenuViewEvent);
+		_mainMenuView.createUI();
 		
 		document.addEventListener("backbutton", close, true);
 		// loads the localization data onto the screen widgets

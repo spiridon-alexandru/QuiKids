@@ -11,6 +11,17 @@ function GameRepo()
 	var _category = null;
 	var _language = null;
 	var _difficulty = null;
+	
+	this.fillGameObjectQuestions = function(gameObject, successCallback, failureCallback)
+	{
+		if(undefined != gameObject && (gameObject instanceof GameObject))
+		{
+			_successCallback = successCallback;
+			_failureCallback = failureCallback;
+			_gameObj = gameObject;
+			readQuestions(_gameObj.getCategory(), _gameObj.getLanguage(), _gameObj.getDifficulty());
+		}
+	};
 
 	function readQuestions(category, language, difficulty)
 	{
@@ -225,16 +236,5 @@ function GameRepo()
 			}
 		}
 		_successCallback();
-	};
-
-	this.fillGameObjectQuestions = function(gameObject, successCallback, failureCallback)
-	{
-		if(undefined != gameObject && (gameObject instanceof GameObject))
-		{
-			_successCallback = successCallback;
-			_failureCallback = failureCallback;
-			_gameObj = gameObject;
-			readQuestions(_gameObj.getCategory(), _gameObj.getLanguage(), _gameObj.getDifficulty());
-		}
 	};
 };

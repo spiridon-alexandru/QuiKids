@@ -22,6 +22,7 @@ function GameLanguageViewController(pushScreenCallback)
 	this.initUI = function()
 	{
 		_gameLanguageView = new GameLanguageView(gameViewLoaded);
+		_gameLanguageView.createUI();
 		
 		// loads the localization data onto the screen widgets
 		loadScreen();

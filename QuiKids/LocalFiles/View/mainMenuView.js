@@ -33,13 +33,59 @@ function MainMenuView(title, eventCallback)
 	var _playLabel;
 	var _settingsLabel;
 	var _achievementsLabel;
-
-	createUI();
 	
+	// variables related to the view resources
+	var _mainMenuDirName = "Menu";
+	var _mainMenuBackgroundFileName = "menuBackground.png";
+	var _quickPlayButtonImageFileName = "quick play.png";
+	var _playButtonImageFileName = "play.png";
+	var _settingsButtonImageFileName = "settings.png";
+	var _achievementsButtonImageFileName = "achievements.png";
+	var _aboutButtonImageFileName = "about.png";
+	var _helpButtonImageFileName = "help.png";
+	
+	this.setQuickPlayLabelText = function(text)
+	{
+		_quickPlayLabel.setProperty("text", text);
+	};
+	
+	this.setPlayLabelText = function(text)
+	{
+		_playLabel.setProperty("text", text);
+	};
+	
+	this.setSettingsLabelText = function(text)
+	{
+		_settingsLabel.setProperty("text", text);
+	};
+	
+	this.setAchievementsLabelText = function(text)
+	{
+		_achievementsLabel.setProperty("text", text);
+	};
+	
+	/**
+	 * Returns the game screen.
+	 * @return The game screen.
+	 */
+	this.getScreen = function()
+	{
+		return _screen;
+	};
+	
+	/**
+	 * Returns the screen title.
+	 * @return The screen title.
+	 */
+	this.getScreenTitle = function()
+	{
+		return _title;
+	};
+
 	/**
 	 * Creates the UI of the quick game.
 	 */
-	function createUI()
+	this.createUI = function()
 	{
 		// button width = 80% of the min(screenWidth,screenHeight) / 2
 		_buttonWidth = Math.floor(((screenWidth<screenHeight?screenWidth:screenHeight) * (70/100)) / 2);
@@ -73,22 +119,7 @@ function MainMenuView(title, eventCallback)
 			"height": "100%"
 		});
 
-		var backgroundPath;
-		
-		switch (screenType) {
-		case SMALL_SCREEN:
-			backgroundPath = "./img/Background/SMALL/menuBackground.png";
-			break;
-		case MEDIUM_SCREEN:
-			backgroundPath = "./img/Background/MEDIUM/menuBackground.png";
-			break;
-		case LARGE_SCREEN:
-			backgroundPath = "./img/Background/LARGE/menuBackground.png";
-			break;
-		default:
-			backgroundPath = "./img/Background/XLARGE/menuBackground.png";
-			break;
-		}	
+		var backgroundPath = getBackgroundImagePath();
 		
 		var backgroundImage = mosync.nativeui.create("Image", "mainMenuBackgroundImg",
 		{
@@ -150,16 +181,16 @@ function MainMenuView(title, eventCallback)
 		
 		switch (screenType) {
 		case SMALL_SCREEN:
-			addButtonImages("SMALL");
+			addButtonImages(SCREENSIZE.SMALL);
 			break;
 		case MEDIUM_SCREEN:
-			addButtonImages("MEDIUM");
+			addButtonImages(SCREENSIZE.MEDIUM);
 			break;
 		case LARGE_SCREEN:
-			addButtonImages("LARGE");
+			addButtonImages(SCREENSIZE.LARGE);
 			break;
 		default:
-			addButtonImages("XLARGE");
+			addButtonImages(SCREENSIZE.XLARGE);
 			break;
 		}
 		
@@ -216,32 +247,43 @@ function MainMenuView(title, eventCallback)
 	
 	/**
 	 * Adds images to the main menu buttons.
-	 * TODO SA: use xml values for the image paths
 	 * @param screenSize expects a string; "SMALL", "MEDIUM", "LARGE" or "XLARGE"
 	 */
 	function addButtonImages(screenSize)
-	{
-		 mosync.resource.loadImage("./img/Menu/"+ screenSize + "/quick play.png", "img", function(imageID, imageHandle){
+	{		
+		var quikPlayImagePath = "./" + rootImageDir + "/" + _mainMenuDirName + "/" +
+					screenSize + "/" + _quickPlayButtonImageFileName;
+		mosync.resource.loadImage(quikPlayImagePath, "QuickPlayButtonImage", function(imageID, imageHandle){
 			 	_quickPlayButton.setProperty("backgroundImage", imageHandle);
 	        });
 		 
-		 mosync.resource.loadImage("./img/Menu/" + screenSize + "/play.png", "PlayButtonImage", function(imageID, imageHandle){
+		var playImagePath = "./" + rootImageDir + "/" + _mainMenuDirName + "/" +
+				screenSize + "/" + _playButtonImageFileName;
+		mosync.resource.loadImage(playImagePath, "PlayButtonImage", function(imageID, imageHandle){
 	            _playButton.setProperty("backgroundImage", imageHandle);
 	        });
 		 
-		 mosync.resource.loadImage("./img/Menu/" + screenSize + "/settings.png", "SettingsButtonImage", function(imageID, imageHandle){
+		var settingsImagePath = "./" + rootImageDir + "/" + _mainMenuDirName + "/" +
+				screenSize + "/" + _settingsButtonImageFileName;
+		mosync.resource.loadImage(settingsImagePath, "SettingsButtonImage", function(imageID, imageHandle){
 	            _settingsButton.setProperty("backgroundImage", imageHandle);
 	        });
-		 
-		 mosync.resource.loadImage("./img/Menu/" + screenSize + "/achievements.png", "AchievementsButtonImage", function(imageID, imageHandle){
+		
+		var achievementsImagePath = "./" + rootImageDir + "/" + _mainMenuDirName + "/" +
+				screenSize + "/" + _achievementsButtonImageFileName;
+		mosync.resource.loadImage(achievementsImagePath, "AchievementsButtonImage", function(imageID, imageHandle){
 	            _achievementsButton.setProperty("backgroundImage", imageHandle);
 	        });
 		 
-		 mosync.resource.loadImage("./img/Menu/" + screenSize + "/about.png", "AboutButtonImage", function(imageID, imageHandle){
+		var aboutImagePath = "./" + rootImageDir + "/" + _mainMenuDirName + "/" +
+				screenSize + "/" + _aboutButtonImageFileName;
+		mosync.resource.loadImage(aboutImagePath, "AboutButtonImage", function(imageID, imageHandle){
 	            _aboutButton.setProperty("backgroundImage", imageHandle);
 	        });
 		 
-		 mosync.resource.loadImage("./img/Menu/" + screenSize + "/help.png", "HelpButtonImage", function(imageID, imageHandle){
+		var helpImagePath = "./" + rootImageDir + "/" + _mainMenuDirName + "/" +
+				screenSize + "/" + _helpButtonImageFileName;
+		mosync.resource.loadImage(helpImagePath, "HelpButtonImage", function(imageID, imageHandle){
 	            _helpButton.setProperty("backgroundImage", imageHandle);
 	        });
 	}
@@ -451,41 +493,29 @@ function MainMenuView(title, eventCallback)
 		});
 	}
 	
-	this.setQuickPlayLabelText = function(text)
-	{
-		_quickPlayLabel.setProperty("text", text);
-	};
-	
-	this.setPlayLabelText = function(text)
-	{
-		_playLabel.setProperty("text", text);
-	};
-	
-	this.setSettingsLabelText = function(text)
-	{
-		_settingsLabel.setProperty("text", text);
-	};
-	
-	this.setAchievementsLabelText = function(text)
-	{
-		_achievementsLabel.setProperty("text", text);
-	};
-	
 	/**
-	 * Returns the game screen.
-	 * @return The game screen.
+	 * Returns the main screen background image path based on the screen size.
 	 */
-	this.getScreen = function()
+	function getBackgroundImagePath()
 	{
-		return _screen;
-	};
-	
-	/**
-	 * Returns the screen title.
-	 * @return The screen title.
-	 */
-	this.getScreenTitle = function()
-	{
-		return _title;
-	};
+		var imagePath = "./" + rootImageDir + "/" + backgroundImageDir;
+		var backgroundPath;
+		switch (screenType) 
+		{
+			case SMALL_SCREEN:
+				backgroundPath = imagePath + "/" + SCREENSIZE.SMALL;
+				break;
+			case MEDIUM_SCREEN:
+				backgroundPath = imagePath + "/" + SCREENSIZE.MEDIUM;
+				break;
+			case LARGE_SCREEN:
+				backgroundPath = imagePath + "/" + SCREENSIZE.LARGE;
+				break;
+			default:
+				backgroundPath = imagePath + "/" + SCREENSIZE.XLARGE;
+				break;
+		}
+		backgroundPath += "/" + _mainMenuBackgroundFileName;
+		return backgroundPath;
+	}
 }
