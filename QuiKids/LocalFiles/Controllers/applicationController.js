@@ -28,7 +28,7 @@ function ApplicationController()
 		// until the main menu screen is loaded, a loading screen will be visible
 		loadingScreen.showUI();
 
-		initFileManager(fileManagerInitialized);
+		initFileManager(fileManagerInitialized, fileManagerFailedToInitialize);
 	};	
 	
 	/**
@@ -44,6 +44,15 @@ function ApplicationController()
 			showMainStackScreen();
 		});
 		_mainMenuViewController.initUI();
+	}
+	
+	/**
+	 * Gets called when an error has occured while initializing the file manager.
+	 */
+	function fileManagerFailedToInitialize(errorString)
+	{
+		// TODO: handle the error properly
+		alert(errorString);
 	}
 	
 	/**

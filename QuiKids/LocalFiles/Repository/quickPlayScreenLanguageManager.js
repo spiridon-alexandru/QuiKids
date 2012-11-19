@@ -3,7 +3,7 @@ var callback;
 /**
  * This function refreshes the file list in the file manager panel.
  */
-function readQuickPlayLanguageFile(successCallback)
+function readQuickPlayLanguageFile(successCallback, failureCallback)
 {	
 	// set the success callback
 	callback = successCallback;
@@ -25,14 +25,15 @@ function readQuickPlayLanguageFile(successCallback)
 						{
 							if (entries[i].name == quickPlayScreenLanguagesFileName && entries[i].isFile)
 							{
-								readQuickPlayFile(entries[i]);
+								readQuickPlayFile(entries[i], failureCallback);
 								break;
 							}
 						}
 					},
 					function(error)
 					{
-						alert("readLanguageFile error: " + error);
+						var errorString = "readQuickPlayLanguageFile1 error:" + error;
+						failureCallback(errorString);
 					});
 				break;
 			}
@@ -40,7 +41,8 @@ function readQuickPlayLanguageFile(successCallback)
 	},
 	function(error)
 	{
-		alert("readSettingsFile error: " + error);
+		var errorString = "readQuickPlayLanguageFile2 error:" + error;
+		failureCallback(errorString);
 	});
 }
 
@@ -48,19 +50,19 @@ function readQuickPlayLanguageFile(successCallback)
  * Sets the file editing panel to the selected file.
  * @param file FilEntry with the info about the selected file.
  */
-function readQuickPlayFile(file)
+function readQuickPlayFile(file, failureCallback)
 {
 	var reader = new FileReader();
 	reader.onloadend = function(evt){
 		var settingsFileContent = evt.target.result;
-		parseQuickPlayFileContent(settingsFileContent);
+		parseQuickPlayFileContent(settingsFileContent, failureCallback);
 	};
 
 	// This call will invoke the onloaded callback above.
 	reader.readAsText(file);
 }
 
-function parseQuickPlayFileContent(content)
+function parseQuickPlayFileContent(content, failureCallback)
 {
 	var parser;
 	var xmlDoc;
@@ -89,7 +91,8 @@ function parseQuickPlayFileContent(content)
 	}
 	else
 	{
-		alert("The application language (" + languageString + ") is not available!");
+		var errorString = "parseQuickPlayFileContent: the application language (" + languageString + ") is not available!";
+		failureCallback(errorString);
 	}
 }
 

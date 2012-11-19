@@ -56,8 +56,18 @@ function MainMenuViewController(pushScreenCallback)
 		{
 			updateUI();
 			pushScreenCallback();
-		});
+		}, mainScreenLanguageFileReadingFailed);
 	}
+	
+	/**
+	 * Gets called when the main screen language file reading failed.
+	 */
+	function mainScreenLanguageFileReadingFailed(errorString)
+	{
+		// TODO: handle the error properly
+		alert(errorString);
+	}
+	
 	
 	/**
 	 * Handles a main menu view event. Initializes and pushes new screens if needed.

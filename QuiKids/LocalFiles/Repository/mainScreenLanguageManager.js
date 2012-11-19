@@ -3,7 +3,7 @@ var callback;
 /**
  * This function refreshes the file list in the file manager panel.
  */
-function readMainScreenLanguageFile(successCallback)
+function readMainScreenLanguageFile(successCallback, failureCallback)
 {	
 	// set the success callback
 	callback = successCallback;
@@ -24,14 +24,15 @@ function readMainScreenLanguageFile(successCallback)
 						{
 							if (entries[i].name == mainScreenLanguagesFileName && entries[i].isFile)
 							{
-								readMainScreenFile(entries[i]);
+								readMainScreenFile(entries[i], failureCallback);
 								break;
 							}
 						}
 					},
 					function(error)
 					{
-						alert("readLanguageFile error: " + error);
+						var errorString = "readLanguageFile1 error: " + error;
+						failureCallback(errorString);
 					});
 				break;
 			}
@@ -39,7 +40,8 @@ function readMainScreenLanguageFile(successCallback)
 	},
 	function(error)
 	{
-		alert("readSettingsFile error: " + error);
+		var errorString = "readLanguageFile2 error: " + error;
+		failureCallback(errorString);
 	});
 }
 
@@ -47,19 +49,19 @@ function readMainScreenLanguageFile(successCallback)
  * Sets the file editing panel to the selected file.
  * @param file FilEntry with the info about the selected file.
  */
-function readMainScreenFile(file)
+function readMainScreenFile(file, failureCallback)
 {
 	var reader = new FileReader();
 	reader.onloadend = function(evt){
 		var settingsFileContent = evt.target.result;
-		parseMainScreenFileContent(settingsFileContent);
+		parseMainScreenFileContent(settingsFileContent, failureCallback);
 	};
 
 	// This call will invoke the onloaded callback above.
 	reader.readAsText(file);
 }
 
-function parseMainScreenFileContent(content)
+function parseMainScreenFileContent(content, failureCallback)
 {
 	var parser;
 	var xmlDoc;
@@ -88,7 +90,8 @@ function parseMainScreenFileContent(content)
 	}
 	else
 	{
-		alert("The application language (" + languageString + ") is not available!");
+		var errorString = "parseMainScreenFileContent: the application language (" + languageString + ") is not available!";
+		failureCallback(errorString);
 	}
 }
 

@@ -27,7 +27,7 @@ var localFilesDir; // DirectoryEntry for the LocalFiles directory.
 /**
  * This function initializes the file manager.
  */
-function initFileManager(successCallback)
+function initFileManager(successCallback, failureCallback)
 {
 	window.requestFileSystem(
 		LocalFileSystem.PERSISTENT,
@@ -47,13 +47,15 @@ function initFileManager(successCallback)
 				},
 				function(error)
 				{
-					alert("initFileManager1 error: " + error);
+					var errorString = "initFileManager1 error: " + error;
+					failureCallback(errorString);
 				});
 		},
 		// Error callback.
 		function(error)
 		{
-			alert("initFileManager2 error: " + error);
+			var errorString = "initFileManager2 error: " + error;
+			failureCallback(errorString);
 		});
 }
 
@@ -61,7 +63,7 @@ function initFileManager(successCallback)
 /**
  * @brief Reads all the available application categories.
  */
-function readAllCategories(successCallback)
+function readAllCategories(successCallback, failureCallback)
 {
 	var categories = [];
 	var catCounter = 0;
@@ -94,7 +96,8 @@ function readAllCategories(successCallback)
 					},
 					function(error)
 					{
-						alert("read Category dir error: " + error);
+						var errorString = "readAllCategories1 error: " + error;
+						failureCallback(errorString);
 					});
 					break;
 				}
@@ -102,12 +105,13 @@ function readAllCategories(successCallback)
 		},
 		function(error)
 		{
-			alert("read local files dir error: " + error);
+			var errorString = "readAllCategories2 error: " + error;
+			failureCallback(errorString);
 		});
 	}
 }
 
-function readCategoryLanguages(categoryEntry, successCallback)
+function readCategoryLanguages(categoryEntry, successCallback, failureCallback)
 {
 	var languages = [];
 	var langCount = 0;
@@ -129,6 +133,7 @@ function readCategoryLanguages(categoryEntry, successCallback)
 	},
 	function(error)
 	{
-		alert("read Category dir error: " + error);
+		var errorString = "readCategoryLanguage error:" + error;
+		failureCallback(errorString);
 	});
 }

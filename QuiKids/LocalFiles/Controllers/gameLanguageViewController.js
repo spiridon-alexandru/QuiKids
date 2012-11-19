@@ -40,7 +40,7 @@ function GameLanguageViewController(pushScreenCallback)
 	 */
 	function loadScreen()
 	{
-		readGameLanguageScreenLanguageFile(gameLanguageScreenLanguageFileRead);
+		readGameLanguageScreenLanguageFile(gameLanguageScreenLanguageFileRead, gameLanguageScreenLanguageFileReadingFailed);
 	}
 	
 	/**
@@ -49,7 +49,16 @@ function GameLanguageViewController(pushScreenCallback)
 	function gameLanguageScreenLanguageFileRead()
 	{
 		updateUI();
-		readAllCategories(allCategoriesRead);
+		readAllCategories(allCategoriesRead, categoriesReadingFailed);
+	}
+	
+	/**
+	 * Gets called when the game language screen file reading failed.
+	 */
+	function gameLanguageScreenLanguageFileReadingFailed(errorString)
+	{
+		// TODO: handle the error properly
+		alert(errorString);
 	}
 	
 	/**
@@ -61,8 +70,27 @@ function GameLanguageViewController(pushScreenCallback)
 		var randomIndex = Math.floor(Math.random() * categories.length);
 		_selectedCategory = categories[randomIndex];
 		
-		readCategoryLanguages(_selectedCategory, categoryLanguageFileRead);
+		readCategoryLanguages(_selectedCategory, categoryLanguageFileRead, categoryLanguageFileReadingFailed);
 	}
+	
+	/**
+	 * Gets called when the categories file reading has failed.
+	 */
+	function categoriesReadingFailed(errorString)
+	{
+		// TODO: handle the error properly
+		alert(errorString);
+	}
+	
+	/**
+	 * Gets called when the category language file reading has failed.
+	 */
+	function categoryLanguageFileReadingFailed(errorString)
+	{
+		// TODO: handle the error properly
+		alert(errorString);
+	}
+	
 	
 	/**
 	 * Gets called when the category language file has been read.

@@ -59,8 +59,17 @@ function QuickGameViewController(language, pushScreenCallback)
 		{
 			updateUI();
 			pushScreenCallback();
-		});
+		}, readQuickPlayLanguageFileReadingFailed);
 	};
+	
+	/**
+	 * Gets called when the quick play language file reading has failed.
+	 */
+	function readQuickPlayLanguageFileReadingFailed(errorString)
+	{
+		// TODO: handle the error properly
+		alert(errorString);
+	}
 	
 	/**
 	 * Updates the game screen UI with the localized text.
@@ -90,7 +99,7 @@ function QuickGameViewController(language, pushScreenCallback)
 
 		var gRepo = new GameRepo();
 
-		gRepo.fillGameObjectQuestions(_randomGameObject, gameObjectQuestionsFilled);
+		gRepo.fillGameObjectQuestions(_randomGameObject, gameObjectQuestionsFilled, fillGameObjectFailed);
 	}
 	
 	/**
@@ -100,6 +109,15 @@ function QuickGameViewController(language, pushScreenCallback)
 	{
 		generateQuestionToTileMapping();
 		setNextQuestion(createGameView);
+	}
+	
+	/**
+	 * Gets called when the 'fillGameObjectQuestions' function encountered a problem.
+	 */
+	function fillGameObjectFailed(errorString)
+	{
+		// TODO: handle the error properly
+		alert(errorString);
 	}
 	
 	/**

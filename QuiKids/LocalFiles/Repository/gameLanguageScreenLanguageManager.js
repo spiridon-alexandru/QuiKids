@@ -3,7 +3,7 @@ var callback;
 /**
  * This function refreshes the file list in the file manager panel.
  */
-function readGameLanguageScreenLanguageFile(successCallback)
+function readGameLanguageScreenLanguageFile(successCallback, failureCallback)
 {	
 	// set the success callback
 	callback = successCallback;
@@ -24,14 +24,15 @@ function readGameLanguageScreenLanguageFile(successCallback)
 						{
 							if (entries[i].name == gameLanguageScreenLanguagesFileName && entries[i].isFile)
 							{
-								readGameLanguageScreenFile(entries[i]);
+								readGameLanguageScreenFile(entries[i], failureCallback);
 								break;
 							}
 						}
 					},
 					function(error)
 					{
-						alert("readLanguageFile error: " + error);
+						var errorString = "readGameLanguageScreenLanguageFile1 error: " + error;
+						failureCallback(errorString);
 					});
 				break;
 			}
@@ -39,7 +40,8 @@ function readGameLanguageScreenLanguageFile(successCallback)
 	},
 	function(error)
 	{
-		alert("readSettingsFile error: " + error);
+		var errorString = "readGameLanguageScreenLanguageFile2 error: " + error;
+		failureCallback(errorString);
 	});
 }
 
@@ -47,19 +49,19 @@ function readGameLanguageScreenLanguageFile(successCallback)
  * Sets the file editing panel to the selected file.
  * @param file FilEntry with the info about the selected file.
  */
-function readGameLanguageScreenFile(file)
+function readGameLanguageScreenFile(file, failureCallback)
 {
 	var reader = new FileReader();
 	reader.onloadend = function(evt){
 		var gameLanguageFileContent = evt.target.result;
-		parseGameLanguageScreenFileContent(gameLanguageFileContent);
+		parseGameLanguageScreenFileContent(gameLanguageFileContent, failureCallback);
 	};
 
 	// This call will invoke the onloaded callback above.
 	reader.readAsText(file);
 }
 
-function parseGameLanguageScreenFileContent(content)
+function parseGameLanguageScreenFileContent(content, failureCallback)
 {
 	var parser;
 	var xmlDoc;
@@ -88,7 +90,8 @@ function parseGameLanguageScreenFileContent(content)
 	}
 	else
 	{
-		alert("The application language (" + languageString + ") is not available!");
+		var errorString = "parseGameLanguageScreenFileContent: the application language (" + languageString + ") is not available!";
+		failureCallback(errorString);
 	}
 }
 
